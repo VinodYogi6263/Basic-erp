@@ -18,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import com.nrt.Email.EmailSender;
 import com.nrt.authentication.CustomUserDetails;
 import com.nrt.authentication.CustomUserService;
 import com.nrt.authentication.JwtUtil;
@@ -46,11 +48,15 @@ public class UserServiceImpl implements UserService {
 	@Autowired
 	BCryptPasswordEncoder passwordEncoder;
 
+	@Autowired
+	private EmailSender emailSender;
+
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	public ResponseEntity<User> saveData(UserRequest userRequest) {
 		Date date = Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
 		User user = new User();
+		String hashedPassword = null;
 		try {
 			user.setEmail(userRequest.getRequestEmialId());
 			user.setFirstName(userRequest.getRequestFirstName());
@@ -62,14 +68,16 @@ public class UserServiceImpl implements UserService {
 			user.setPasswordUpdated(date);
 			user.setRole(new Role("ROLE_" + userRequest.getRequestRole().toUpperCase()));
 			String generateRandomPassword = RandomPasswordGeneratorWithPattern.generateRandomPassword();
-			String hashedPassword = passwordEncoder.encode(generateRandomPassword);
+			hashedPassword = passwordEncoder.encode(generateRandomPassword);
 			user.setPassword(hashedPassword);
-			System.out.println(generateRandomPassword);
 			user = userRepository.save(user);
+			emailSender.sendWelcomeEmail(user.getEmail(),user.getEmail(),
+					user.getRole().getRole(), generateRandomPassword,"Registration Successfully Done..!");
 		} catch (Exception e) {
 			log.info("error inside the user register method");
 			log.error(e.getLocalizedMessage());
 		}
+
 		return new ResponseEntity<User>(user, HttpStatus.OK);
 
 	}

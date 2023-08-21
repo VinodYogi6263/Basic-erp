@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>List of Categories</title>
+</head>
+<body>
+
+<h1>List of Categories</h1>
+<ul>
+    <li th:each="category : ${categories}">
+        <span th:text="${category.name}"></span>
+    </li>
+</ul>
+
+<br />
+<a href="/categories/add">Add Category</a>
+</body>
+</html>

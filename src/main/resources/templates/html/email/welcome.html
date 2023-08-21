@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome to Nrt Basic ERP</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+    <div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+         <img src="cid:nrtLogo" alt="Nrt company Logo" style="max-width: 100px;">
+        <h2 style="color: #333;">Welcome to Nrt Basic ERP!</h2>
+       <p>Congratulations <b th:text="${username}"></b> on your successful registration. We are excited to have you on board.</p>
+        <p>Your account details:</p>
+        <ul>
+            <li><strong>Username:</strong> <span th:text="${username}"></span></li>
+            <li><strong>Role:</strong> <span th:text="${role}"></span></li>
+            <li><strong>Password:</strong> <span th:text="${password}"></span></li>
+            </ul>
+        <p>Please keep your login details safe and do not share your password with anyone.</p>
+        <p>If you have any questions or need assistance, feel free to contact us.</p>
+        <p>Contact-email: <b>basic.erps@gmail.com</b></p>
+    </div>
+</body>
+</html>

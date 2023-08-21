@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update Product</title>
+</head>
+<body>
+
+<h1>Update Product</h1>
+<form th:object="${product}" th:action="@{/updateProduct}" method="post">
+	<label for="name">Product Id:</label>
+    <input type="number" th:field="${product.id}"/><br>
+    
+    <label for="name">Product Name:</label>
+    <input type="text" id="name" name="name" th:value="${product.name}"required/><br>
+    
+    <label for="description">Product Description:</label>
+    <input type="text" id="description" name="description" th:value="${product.description}"required/><br>
+    
+    <label for="price">Purchase Price:</label>
+    <input type="number"id="purchasePrice" name="purchasePrice" th:value="${product.purchasePrice}"required/><br>
+    
+    <label for="price">Max Retail Price:</label>
+    <input type="number" id="maxRetailPrice" name="maxRetailPrice" th:value="${product.maxRetailPrice}"required/><br>
+    
+    <label for="price">Selling Price:</label>
+    <input type="number" id="sellingPrice" name="sellingPrice" th:value="${product.sellingPrice}"required/><br>
+    
+    <label for="price">Quantity:</label>
+    <input type="number" id="quantity" name="quantity" th:value="${product.quantity}" required/><br>
+    
+    <button type="submit">Update Product</button>
+</form>
+</br><a href="/listProduct">Go to Product List</a></br>
+</body>
+</html>

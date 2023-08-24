@@ -7,6 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,9 +26,6 @@ import com.nrt.service.ProductService;
 
 @Service
 public class ProductServiceImpl implements ProductService {
-
-	@Value("${image.upload.path}")
-	private String imageUploadPath;
 
 	@Autowired
 	private ProductRepository productRepository;
@@ -59,9 +57,8 @@ public class ProductServiceImpl implements ProductService {
 		try {
 			productUpdate.setImagePath(file.getOriginalFilename());
 			Product updatedProduct = productRepository.save(productUpdate);
-			String imagePath = imageUploadPath + file.getOriginalFilename();
-			Path destination = Paths.get(imagePath);
-			Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+			Path externalImagePath = Path.of("static/images/", file.getOriginalFilename());
+			Files.copy(file.getInputStream(), externalImagePath, StandardCopyOption.REPLACE_EXISTING);
 			return updatedProduct != null; // Return true if the save operation was successful
 		} catch (Exception e) {
 			e.printStackTrace(); // You can handle the exception as needed
@@ -82,13 +79,11 @@ public class ProductServiceImpl implements ProductService {
 		if (productRepository.existsById(product.getId())) {
 			return false;
 		} else {
-			String imagePath = imageUploadPath + file.getOriginalFilename();
-			Path destination = Paths.get(imagePath);
 			try {
-				Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+				Path externalImagePath = Path.of("static/images/", file.getOriginalFilename());
+				Files.copy(file.getInputStream(), externalImagePath, StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {
 				e.printStackTrace();
-
 			}
 
 			Optional<SubCatagory> subcatagoryOption = subCatagoryRepository.findById(productRequest.getSubCategoryId());

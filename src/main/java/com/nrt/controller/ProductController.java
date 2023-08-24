@@ -132,7 +132,9 @@ public class ProductController {
 
 	@GetMapping(value = "/images/{imageName}", produces = MediaType.APPLICATION_ATOM_XML_VALUE)
 	public void getImage(@PathVariable String imageName, HttpServletResponse response) throws IOException {
-		String imageFilePath = "D:\\sts code\\Basic-erp\\src\\main\\resources\\static\\images\\" + imageName;
+		ClassLoader classLoader = getClass().getClassLoader();
+		String resourceFolderPath = classLoader.getResource("static/images/").getPath();
+		String imageFilePath = resourceFolderPath + imageName;
 		File imageFile = new File(imageFilePath);
 		if (!imageFile.exists() || !imageFile.isFile()) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);

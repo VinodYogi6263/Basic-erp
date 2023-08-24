@@ -5,6 +5,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import com.nrt.request.UpdateRequest;
 import com.nrt.request.UserRequest;
@@ -31,8 +33,10 @@ public class UserController {
 
 	@GetMapping("/profile")
 	public ModelAndView Profile(ModelAndView modelAndView) {
+		UserRequest user = userService.getUserByEmail();
+		modelAndView.addObject("response", user);
+		modelAndView.addObject("profilePictureUrl", "/images/" + user.getDP());
 
-		modelAndView.addObject("response", userService.getUserByEmail());
 		modelAndView.setViewName("/html/login/profile");
 		return modelAndView;
 	}
@@ -66,6 +70,25 @@ public class UserController {
 	@GetMapping("/index/page")
 	public ModelAndView Index(ModelAndView modelAndView) {
 		modelAndView.setViewName("/html/index");
+		return modelAndView;
+
+	}
+
+	@PostMapping("/save/profile")
+	public ModelAndView DP(@RequestParam("file") MultipartFile file, ModelAndView modelAndView) {
+		Boolean flag = userService.saveDP(file);
+		UserRequest user = userService.getUserByEmail();
+		modelAndView.addObject("response", user);
+		if (flag) {
+			modelAndView.addObject("profilePictureUrl", "/images/" + user.getDP());
+			modelAndView.setViewName("/html/login/profile");
+		} else {
+			modelAndView.addObject("title", "Faild to update Profile ");
+			modelAndView.addObject("url", "http://localhost:9090/profile");
+			modelAndView.addObject("button", "to Profile");
+			modelAndView.addObject("error", "Faild to update Profile");
+			modelAndView.setViewName("/html/coupon/error");
+		}
 		return modelAndView;
 
 	}

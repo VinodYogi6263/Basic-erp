@@ -4,11 +4,18 @@ import java.util.Optional;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -18,6 +25,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import com.nrt.Email.EmailSender;
 import com.nrt.authentication.CustomUserDetails;
 import com.nrt.authentication.CustomUserService;
@@ -62,6 +71,9 @@ public class UserServiceImpl implements UserService {
 
 	private static final String OTP_COOKIE_NAME = "OTP";
 
+	@Value("${image.upload.path}")
+	private String imageUploadPath;
+
 	private static final Logger log = LoggerFactory.getLogger(UserServiceImpl.class);
 
 	public ResponseEntity<User> saveData(UserRequest userRequest) {
@@ -78,7 +90,6 @@ public class UserServiceImpl implements UserService {
 			String generateRandomPassword = RandomPasswordGeneratorWithPattern.generateRandomPassword();
 			String hashedPassword = passwordEncoder.encode(generateRandomPassword);
 			user.setPassword(hashedPassword);
-			System.out.println(generateRandomPassword);
 			user = userRepository.save(user);
 			Map<String, String> sourceMap = new HashMap<String, String>();
 			sourceMap.put("password", generateRandomPassword);
@@ -125,7 +136,6 @@ public class UserServiceImpl implements UserService {
 	}
 
 	public Boolean updatePassword(String oldPassword, String newPassword) {
-		Date date = Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(Calendar.getInstance().getTime()));
 		Optional<User> optionalUser = null;
 		UserDetails userDetails = null;
 		Boolean flag = Boolean.FALSE;
@@ -180,6 +190,7 @@ public class UserServiceImpl implements UserService {
 			userRequest.setRequestFirstName(userOption.get().getFirstName());
 			userRequest.setRequestLastName(userOption.get().getLastName());
 			userRequest.setRequestPhone(userOption.get().getPhoneNo());
+			userRequest.setDP(userOption.get().getDp());
 		}
 		return userRequest;
 	}
@@ -266,5 +277,32 @@ public class UserServiceImpl implements UserService {
 			}
 		}
 		return flag;
+	}
+
+	@Override
+	public Boolean saveDP(MultipartFile file) {
+		String imagePath = imageUploadPath + file.getOriginalFilename();
+		Path destination = Paths.get(imagePath);
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null && authentication.getPrincipal() instanceof UserDetails) {
+			UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+			Optional<User> userOption = userRepository.findByEmail(userDetails.getUsername());
+
+			if (userOption.isPresent()) {
+				userOption.get().setDp(file.getOriginalFilename());
+				userRepository.save(userOption.get());
+			} else {
+				return Boolean.FALSE;
+			}
+		}
+
+		try {
+			Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
+			return Boolean.TRUE;
+		} catch (IOException e) {
+
+			e.printStackTrace();
+		}
+		return Boolean.FALSE;
 	}
 }

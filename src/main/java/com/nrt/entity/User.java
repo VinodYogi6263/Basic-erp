@@ -61,11 +61,14 @@ public class User {
 	@Column(name = "updated_at")
 	private Date updatedAt;
 
-    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true,fetch = FetchType.EAGER)
-    private List<Permission> roles = new ArrayList<>();
+	@OneToMany(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.EAGER)
+	private List<Permission> roles = new ArrayList<>();
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy")
 	@Column(name = "password_updated_at")
 	private Date passwordUpdated;
+
+	@Column(name = "profile_image")
+	private String dp;
 
 }

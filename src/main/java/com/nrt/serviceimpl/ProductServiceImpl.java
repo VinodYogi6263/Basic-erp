@@ -7,9 +7,7 @@ import java.nio.file.Paths;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 import java.util.Optional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -41,6 +39,9 @@ public class ProductServiceImpl implements ProductService {
 	@Autowired
 	private SubCatagoryRepository subCatagoryRepository;
 
+	@Value("${image.upload.path}")
+	private String imageUploadPath;
+
 	@Override
 	public Product GetProductById(Long id) {
 		Optional<Product> findById = productRepository.findById(id);
@@ -57,8 +58,9 @@ public class ProductServiceImpl implements ProductService {
 		try {
 			productUpdate.setImagePath(file.getOriginalFilename());
 			Product updatedProduct = productRepository.save(productUpdate);
-			Path externalImagePath = Path.of("static/images/", file.getOriginalFilename());
-			Files.copy(file.getInputStream(), externalImagePath, StandardCopyOption.REPLACE_EXISTING);
+			String imagePath = imageUploadPath + file.getOriginalFilename();
+			Path destination = Paths.get(imagePath);
+			Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 			return updatedProduct != null; // Return true if the save operation was successful
 		} catch (Exception e) {
 			e.printStackTrace(); // You can handle the exception as needed
@@ -79,11 +81,13 @@ public class ProductServiceImpl implements ProductService {
 		if (productRepository.existsById(product.getId())) {
 			return false;
 		} else {
+			String imagePath = imageUploadPath + file.getOriginalFilename();
+			Path destination = Paths.get(imagePath);
 			try {
-				Path externalImagePath = Path.of("static/images/", file.getOriginalFilename());
-				Files.copy(file.getInputStream(), externalImagePath, StandardCopyOption.REPLACE_EXISTING);
+				Files.copy(file.getInputStream(), destination, StandardCopyOption.REPLACE_EXISTING);
 			} catch (IOException e) {
 				e.printStackTrace();
+
 			}
 
 			Optional<SubCatagory> subcatagoryOption = subCatagoryRepository.findById(productRequest.getSubCategoryId());

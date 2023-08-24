@@ -1,6 +1,7 @@
 package com.nrt.service;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.multipart.MultipartFile;
 
 import com.nrt.entity.User;
 import com.nrt.request.LoginRequest;
@@ -26,5 +27,7 @@ public interface UserService {
 	public Boolean OTPVelidation(String otp, HttpServletRequest request);
 
 	public Boolean ForgotPassword(String newPassword, HttpServletRequest request, HttpServletResponse response);
+
+	public Boolean saveDP(MultipartFile file);
 
 }

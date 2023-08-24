@@ -16,4 +16,6 @@ public class UserRequest {
 	private String requestPhone;
 	private String requestEmialId;
 
+	private String dP;
+
 }

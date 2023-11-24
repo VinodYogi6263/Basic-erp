@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+	<title>Login</title>
+
+	<head>
+		<title>Login and Sign-up Buttons</title>
+		<style>
+			body {
+				display: flex;
+				justify-content: center;
+				align-items: center;
+				min-height: 100vh;
+				margin: 0;
+				background-color: #f2f2f2;
+			}
+
+			.form-container {
+				text-align: center;
+				background-color: #fff;
+				padding: 20px;
+				border-radius: 5px;
+				box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
+			}
+
+			.form-container label,
+			.form-container input {
+				display: block;
+				margin: 10px auto;
+			}
+
+			.form-container input {
+				width: 100%;
+				padding: 8px;
+				border: 1px solid #ccc;
+				border-radius: 3px;
+			}
+
+			button {
+				margin-top: 10px;
+				padding: 10px 20px;
+				background-color: #007bff;
+				color: #fff;
+				border: none;
+				border-radius: 3px;
+				cursor: pointer;
+			}
+
+			.modal {
+				display: none;
+				position: fixed;
+				z-index: 1;
+				left: 0;
+				top: 0;
+				width: 100%;
+				height: 100%;
+				overflow: auto;
+				background-color: rgba(0, 0, 0, 0.4);
+			}
+
+			.modal-content {
+				background-color: #fefefe;
+				margin: 15% auto;
+				padding: 20px;
+				border: 1px solid #888;
+				width: 80%;
+				max-width: 400px;
+				text-align: center;
+			}
+
+			.close {
+				color: #aaa;
+				float: right;
+				font-size: 28px;
+				font-weight: bold;
+			}
+
+			.close:hover,
+			.close:focus {
+				color: black;
+				text-decoration: none;
+				cursor: pointer;
+			}
+		</style>
+	</head>
+
+<body>
+	<div class="container mt-5">
+		<div class="row justify-content-center">
+			<div class="col-md-6">
+				<div class="card">
+					<div class="form-container">
+						<h4>Login</h4>
+						<div class="card-body">
+							<form id="loginForm" method="post">
+
+								<label for="userId">User ID:</label>
+								<input type="text" id="userId" name="userId" required><br><br>
+
+								<label for="password">Password:</label>
+								<input type="password" id="password" name="password" required><br><br>
+								<p id="errorMessage" style="color: red"></p>
+
+								<button type="submit">Login</button>
+								<a href="http://localhost:9090/user/page">Sign-up</a>
+								<label></label>
+								<a href="http://localhost:9090/forgot/password">Forgot-Password</a>
+
+						</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+
+	<script>
+		document.getElementById("loginForm").addEventListener("submit", function (event) {
+			event.preventDefault();
+
+			const userId = document.getElementById("userId").value;
+			const password = document.getElementById("password").value;
+
+			const url = "http://localhost:9090/login/jwt";
+			const requestBody = JSON.stringify({
+				userId: userId,
+				password: password
+			});
+
+			axios.post(url, requestBody, {
+				headers: {
+					"Content-Type": "application/json"
+				}
+			})
+				.then(response => {
+					const data = response.data;
+					if (data.userToken) {
+						localStorage.setItem('userToken', data.userToken);
+						console.log("User token:", data.userToken);
+						console.log("User role:", data.userRole);
+						console.log("User Login:", data.userLogin);
+						const headers = {
+							Authorization: "Bearer " + data.userToken
+						};
+						if (data.userLogin === null) {
+							axios.get("//localhost:9090/password/update", {headers, responseType: 'text'})
+								.then(response => {
+									if (response.status === 200) {
+										const redirectUrl = "//localhost:9090/password/update";
+										window.location.href = redirectUrl;
+									}
+								})
+						} else {
+							axios.get("//localhost:9090/index/page", {headers, responseType: 'text'})
+								.then(response => {
+									if (response.status === 200) {
+										const redirectUrl = "//localhost:9090/index/page";
+										window.location.href = redirectUrl;
+									}
+								})
+						}
+
+
+
+					} else {
+						console.error("Login failed. Please check your credentials.");
+						openModal("Login failed. Please check your credentials.");
+					}
+				})
+				.catch(error => {
+					console.log("please enter valid username and password");
+					openModal("Invalid username or password. Please try again.");
+				});
+		});
+
+		function openModal(errorMessage) {
+			const errorMessageElement = document.getElementById("errorMessage");
+			errorMessageElement.innerHTML = errorMessage;
+
+		}
+
+		function closeModal() {
+			const modal = document.getElementById("errorModal");
+			modal.style.display = "none";
+		}
+	</script>
+
+</body>
+
+</html>

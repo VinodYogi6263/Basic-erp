@@ -4,16 +4,56 @@
 <head>
 	<meta charset="UTF-8" />
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
 	<meta http-equiv="X-UA-Compatible" content="ie=edge" />
 	<title>Otp-Verification</title>
 	<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" />
-	<link rel="stylesheet" type="text/css" href="style.css" />
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+	<style>
+			button {
+			padding: 10px 20px;
+			background-color: #007bff;
+			/* Button background color */
+			color: #fff;
+			/* Text color */
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			cursor: pointer;
+			margin-top:15px;
+		}
+
+		button:hover {
+			background-color: #0056b3;
+			/* Change background color on hover */
+		}
+
+	</style>
 </head>
 
-<body>
+<body style="background-color: rgb(64, 0, 128); justify-content: center;
+        align-items: center;">
+	<!-- Navigation Bar -->
+	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<div class="container">
+			<a class="navbar-brand" href="#">BASIC-ERP</a>
+			<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+			<div class="collapse navbar-collapse" id="navbarNav">
+				<ul class="navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/index/page" style="color: #fff;">Home</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 	<div class="d-flex justify-content-center align-items-center continer">
 		<div class="card py-5 px-3">
 			<h5 class="m-0">Sent OTP Your On Registered Email For verification</h5>
+			<br>
 			<span class="mobile-text"><b>Enter the code we just sent on your Registered Email </b>
 			</span>
 			<br>
@@ -24,8 +64,8 @@
 						<input type="text" class="form-control" autofocus="" placeholder="Enter OTP" minlength="6"
 							maxlength="6" pattern="[0-9]{6}" title="Please enter a 6-digit OTP" required="true"
 							name="otp" />
-
 						<button type="submit">Validate</button>
+
 					</form>
 				</div>
 				<div class="text-center mt-5">

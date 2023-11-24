@@ -1,7 +1,7 @@
 package com.nrt.entity;
 
-import java.sql.Date;
 import java.time.LocalDate;
+import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.nrt.util.MasterEnum.DiscountType;
@@ -13,6 +13,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Data;
 import lombok.ToString;
@@ -28,7 +29,7 @@ public class Coupon {
 	private long couponId;
 
 	@Column(name = "coupon_code")
-	private String Code;
+	private String code;
 
 	@Column(name = "coupon_type")
 	@Enumerated(EnumType.STRING)
@@ -43,11 +44,11 @@ public class Coupon {
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy")
 	@Column(name = "expires_at")
-	private Date expiresAt;
+	private LocalDate expiresAt;
 
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-mm-yyyy")
 	@Column(name = "activet_at")
-	private Date activetAt;
+	private LocalDate activetAt;
 
 	@Column(name = "if_amount_above")
 	private long ifAmountAbove;
@@ -57,6 +58,11 @@ public class Coupon {
 
 	@Column(name = "coupon_applyPerUser")
 	private long applyPerUser;
-	
+
+	@Column(name = "coupon_status")
+	private int couponStatus;
+
+	@OneToMany(mappedBy = "coupon")
+	private List<UserCouponMapping> userMappings;
 
 }

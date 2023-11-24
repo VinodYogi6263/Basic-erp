@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default"
+	data-assets-path="../../assets/" data-template="horizontal-menu-template">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+</head>
+
+<body>
+	<h1>Update Product</h1>
+	<form th:object="${product}" th:action="@{/updateProduct}" method="post" enctype="multipart/form-data">
+		<label for="name">Product Id:</label>
+		<input type="number" th:field="${product.id}" th:readonly="true" /><br><br>
+
+		<label for="name">Product Name:</label>
+		<input type="text" id="name" name="name" th:value="${product.name}" required /><br><br>
+
+		<label for="description">Product Description:</label>
+		<input type="text" id="description" name="description" th:value="${product.description}" required /><br><br>
+
+		<label for="price">Purchase Price:</label>
+		<input type="number" id="purchasePrice" name="purchasePrice" th:value="${product.purchasePrice}" min="0"
+			required /><br><br>
+
+		<label for="price">Max Retail Price:</label>
+		<input type="number" id="maxRetailPrice" name="maxRetailPrice" th:value="${product.maxRetailPrice}" min="0"
+			required /><br><br>
+
+		<label for="price">Selling Price:</label>
+		<input type="number" id="sellingPrice" name="sellingPrice" th:value="${product.sellingPrice}" min="0"
+			required /><br><br>
+
+		<label for="quantity">Quantity:</label>
+		<input type="number" id="quantity" name="quantity" th:value="${product.quantity}" required /><br><br>
+		
+		
+		<label for="productFile"><img th:src="@{'/images/' + ${product.imagePath}}" width="100" height="100" /></label>
+		<input type="file" id="productFile" name="file" th:value="${product.imagePath}" accept="image/*" required>
+		<p>please import .jpg file only</p><br>
+
+		<button type="submit">Update Product</button>
+	</form>
+	</br><a href="/listProduct">Go to Product List</a></br>
+</body>
+
+</html>

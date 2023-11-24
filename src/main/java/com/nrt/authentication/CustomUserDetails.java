@@ -5,16 +5,17 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
-
-import com.nrt.entity.Permission;
 import com.nrt.entity.User;
-
+import com.nrt.serviceimpl.PermissionService;
 import lombok.NoArgsConstructor;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Service
 @NoArgsConstructor
 public class CustomUserDetails implements UserDetails {
@@ -22,20 +23,27 @@ public class CustomUserDetails implements UserDetails {
 	private static final long serialVersionUID = 8015253558311061965L;
 
 	private User user;
-
-	public CustomUserDetails(User user) {
+	
+    @Autowired(required =true)
+	private PermissionService permissionServices;
+	
+	
+	public CustomUserDetails(User user,PermissionService permissionServices) {
 		this.user = user;
+		this.permissionServices=permissionServices;
 
 	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Set<SimpleGrantedAuthority> authorities = new HashSet<>();
-		List<Permission> roles = user.getRoles();
-		for (Permission role : roles) {
-			authorities.add(new SimpleGrantedAuthority(role.getRole()));
+		List<String> permissions = permissionServices.getPermissionsByUserId(user.getId());
+		for (String permission : permissions) {
+			authorities.add(new SimpleGrantedAuthority(permission));
+			log.debug("permissons assigned to user role "+user.getRole().getName());
 		}
-//		authorities.add(new SimpleGrantedAuthority("ROLE_SUPER ADMIN"));
+		authorities.add(new SimpleGrantedAuthority("ROLE_SUPER ADMIN"));
+		log.debug("permissons assigned to user role "+user.getRole().getName());
 		return authorities;
 
 	}

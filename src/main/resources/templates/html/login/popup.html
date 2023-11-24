@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
+    <title>Update Profile</title>
+    <style>
+        /* Add your CSS styles for the popup here */
+        /* For example, you can make it appear as a modal */
+        .popup-container {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .popup-content {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body>
+    <!-- Popup container -->
+    <div class="popup-container" id="popupContainer">
+        <div class="popup-content">
+            <!-- Your popup content goes here -->
+            <h2> Profile Updated</h2>
+            <!-- ... other form elements ... -->
+            <button id="closePopup">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript to show/hide the popup
+        const popupContainer = document.getElementById('popupContainer');
+        const closePopupButton = document.getElementById('closePopup');
+
+        // Open the popup when the page loads or when your controller is hit
+        popupContainer.style.display = 'block';
+
+        // Close the popup when the "Close" button is clicked
+        closePopupButton.addEventListener('click', () => {
+            popupContainer.style.display = 'none';
+        });
+    </script>
+</body>
+</html>

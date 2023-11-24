@@ -3,6 +3,7 @@
 
 <head>
 	<title>Error Message</title>
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
 	<style>
 		body {
 			font-family: Arial, sans-serif;
@@ -36,7 +37,7 @@
     <div class="error-container">
         <h1 class="error-title">Error</h1>
         <p class="error-content">
-            <h5 th:text="${error}"></h5>
+            <h5 th:text="${error_message}"></h5>
         </p>
         <p class="error-content">
 			<p>Click <a th:href="${url}" th:text="${button}"></a></p>

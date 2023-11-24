@@ -1,0 +1,291 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Product List</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: rgb(64, 0, 128);
+		}
+
+		h2 {
+			color: rgb(255, 255, 128);
+			text-align: center;
+			padding: 10px;
+		}
+
+		.form-container {
+			display: flex;
+			justify-content: space-between;
+		}
+
+		.product-card {
+			width: 280px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			margin: 10px;
+			padding: 10px;
+			box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+			transition: transform 0.2s;
+			display: inline-block;
+			background-color: white;
+			height: 450px;
+		}
+
+		.product-card:hover {
+			transform: scale(1.05);
+		}
+
+		.product-image {
+			max-width: 260px;
+			max-height: 250px;
+			min-height: 250px;
+		}
+
+		.add-to-cart-button {
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+		}
+
+		.add-to-cart-button:hover {
+			background-color: #0056b3;
+		}
+
+		form {
+			display: flex;
+			flex-direction: column;
+			align-items: center;
+		}
+
+		button {
+			margin: 5px;
+			padding-top: 10px;
+			color: rgb(255, 255, 0);
+			border: none;
+			padding: 5px 10px;
+			cursor: pointer;
+			border: 1px black;
+			background-color: rgb(100, 255, 100);
+			border-radius: 5px;
+		}
+
+		button:hover {
+			background-color: rgb(50, 200, 50);
+		}
+
+
+		/* Style the quantity input */
+		input[type="number"] {
+			width: 40px;
+			padding: 5px;
+			text-align: center;
+		}
+
+		.search-container {
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			text-align: center;
+		}
+
+		.search-bar {
+			border: 1px solid #ccc;
+			border-radius: 20px;
+			padding: 5px 10px;
+			outline: none;
+		}
+
+		.search-button {
+			background-color: #007BFF;
+			color: #fff;
+			border: none;
+			border-radius: 20px;
+			padding: 5px 15px;
+			cursor: pointer;
+		}
+
+		/* Add some spacing */
+		.search-container {
+			margin: 20px;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body style="background-color:rgb(64, 0, 128)">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Navbar header with the collapse button -->
+			<div class="navbar-header">
+				<!-- Toggle button for collapsing the menu on smaller screens -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a style="color: #fff;" class="navbar-brand" href="http://localhost:9090/index/page">BASIC-ERP</a>
+			</div>
+
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/index/page">
+							🏠 Home
+						</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/view-cart/}"> 🛒My cart </a>
+					</li>
+					<li><a href="http://localhost:9090/profile" style="color: #fff;"><span>
+								<i class="fas fa-user"></i></span>
+							Profile</a></li>
+					<li><a href="http://localhost:9090/logout" style="color: #fff;"><span>
+								<i class="fas fa-sign-out-alt"></i>Logout</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="search-container">
+		<input type="text" class="search-bar" placeholder="Enter your search term" id="search-input">
+		<button type="submit" class="search-button" onclick="searchProducts()"> <i
+				class="fas fa-search search-icon"></i> Search</button>
+	</div>
+
+	<h2 style="color: white;">Welcom in Shopping Mart</h2>
+
+
+	<div id="product-container">
+		<!-- Product details will be displayed here -->
+	</div>
+
+
+	<script>
+		function searchProducts() {
+			const searchTerm = document.getElementById("search-input").value;
+			const productContainer = document.getElementById("product-container");
+			const backendUrl = "http://localhost:9090/searchProduct?term=" + encodeURIComponent(searchTerm);
+			fetch(backendUrl)
+				.then(response => response)
+				.then(products => {
+					// Create HTML elements to display the product details
+					console.log(products.name)
+					const productTitle = document.createElement("h1");
+					productTitle.textContent = products.name;
+
+					const productDescription = document.createElement("p");
+					productDescription.textContent = products.description;
+
+					const productPrice = document.createElement("p");
+					productPrice.textContent = ` Price: ${products.sellingPrice}`;
+
+					// Clear any previous product details
+					productContainer.innerHTML = "";
+
+					// Append the new product details to the container
+					productContainer.appendChild(productTitle);
+					productContainer.appendChild(productDescription);
+					productContainer.appendChild(productPrice);
+				})
+				.catch(error => {
+					console.error("Error fetching product data:", error);
+				});
+		};	
+	</script>
+
+
+
+	<div class="product-card" th:each="product : ${products}">
+		<img class="product-image" th:src="@{'/images/' + ${product.imagePath}}" alt="Product Image" />
+		<h4 th:text="'Name: '+${product.name}">Name</h4>
+		<p th:text="'Desc.: '+${product.description}">description</p>
+		<p th:text="'Price: '+${product.sellingPrice}">sellingPrice</p>
+		<level for="quantity">Add Quantity:</level>
+
+		<div th:if="${product.quantity == 0 }" style="text-align: center;">
+			<strong>
+				<h5 style="color: rgb(255, 0, 0);">Out of Stock</h5>
+			</strong>
+			<button type="submit">Notify Me</button>
+		</div>
+
+		<div th:if="${product.quantity != 0 }">
+			<form th:action="@{/add-to-cart/}" method="post" id="addToCartForm">
+				<input type="number" name="quantity" value="1" min="1" id="quantityInput" />
+				<input type="hidden" name="productId" th:value="${product.id}" />
+				<button class="add-to-cart-button" type="submit">🛒 Add to Cart</button>
+			</form>
+
+			<form th:action="@{http://localhost:9090/order/buySingleItem}" method="get" id="buyNowForm">
+				<input type="hidden" name="productSellingPrice" th:value="${product.sellingPrice}" />
+				<input type="hidden" name="productId" th:value="${product.id}" />
+				<input type="hidden" name="quantity" value="1" min="1" id="quantityInputHidden" />
+				<button type="submit">Buy now</button>
+			</form>
+
+		</div>
+
+		<script>
+			// Get references to the quantity input fields
+			const quantityInput = document.getElementById('quantityInput');
+			const quantityInputHidden = document.getElementById('quantityInputHidden');
+
+			// Add an event listener to the visible quantity input field
+			quantityInput.addEventListener('input', function () {
+				// Update the hidden quantity input field with the same value
+				quantityInputHidden.value = this.value;
+			});
+
+			// Add an event listener to the hidden quantity input field
+			quantityInputHidden.addEventListener('input', function () {
+				// Update the visible quantity input field with the same value
+				quantityInput.value = this.value;
+			});
+		</script>
+
+		<div class="social-icons">
+			<!-- Facebook share button -->
+			<a href="https://www.facebook.com/sharer.php?u=https://yourwebsite.com/product-page" target="_blank">
+				<i class="fab fa-facebook"></i>
+			</a>
+
+			<!-- Twitter share button -->
+			<a href="https://twitter.com/intent/tweet?url=https://yourwebsite.com/product-page&text=Check%20out%20this%20awesome%20product!"
+				target="_blank">
+				<i class="fab fa-twitter"></i>
+			</a>
+			<a href="whatsapp://send?text=Check%20out%20this%20awesome%20product%20at%20https://yourwebsite.com/product-page"
+				target="_blank">
+				<i class="fab fa-whatsapp"></i>
+			</a>
+		</div>
+	</div>
+	</div>
+
+	<script>
+		// Function to refresh the page every 5 seconds
+		function autoRefresh() {
+			setTimeout(function () {
+				location.reload();
+			}, 5000); // 5000 milliseconds = 5 seconds
+		}
+
+		// Call the autoRefresh function when the page loads
+		window.onload = autoRefresh;
+	</script>
+
+</body>
+
+</html>

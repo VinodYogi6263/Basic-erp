@@ -2,58 +2,112 @@
 <html lang="en">
 
 <head>
+	<title>Login & SignUp</title>
 	<meta charset="UTF-8">
-	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-	<title>Login</title>
+	<style>
+		.container {
+			margin-top: 5rem;
+		}
 
-	<head>
-		<title>Login and Sign-up Buttons</title>
-		<style>
-			body {
-				display: flex;
-				justify-content: center;
-				align-items: center;
-				min-height: 100vh;
-				margin: 0;
-				background-color: #f2f2f2;
-			}
+		.card {
+			border: none;
+			border-radius: 10px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
 
-			.form-container {
-				text-align: center;
-				background-color: #fff;
-				padding: 20px;
-				border-radius: 5px;
-				box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
-			}
+		.form-container {
+			padding: 2rem;
+			background-color: rgb(255, 255, 255);
+			border-radius: 5px;
+		}
 
-			.form-container label,
-			.form-container input {
-				display: block;
-				margin: 10px auto;
-			}
+		h4 {
+			text-align: center;
+			margin-bottom: 1rem;
+		}
 
-			.form-container input {
-				width: 100%;
-				padding: 8px;
-				border: 1px solid #ccc;
-				border-radius: 3px;
-			}
+		label {
+			font-weight: 500;
+		}
 
-			button {
-				margin-top: 10px;
-				padding: 10px 20px;
-				background-color: #007bff;
-				color: #fff;
-				border: none;
-				border-radius: 3px;
-				cursor: pointer;
-			}
-		</style>
-	</head>
+		input[type="text"],
+		input[type="password"] {
+			width: 100%;
+			padding: 0.5rem;
+			margin-bottom: 1rem;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
 
-<body>
-	<div class="container mt-5">
+		button[type="submit"] {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			padding: 0.5rem 1rem;
+			cursor: pointer;
+		}
+
+		a {
+			text-decoration: none;
+		}
+
+		a:hover {
+			text-decoration: underline;
+		}
+
+	 body {
+            font-family: Arial, sans-serif;
+			background-image: url('/images/login.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+		}
+
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+
+<body style="background-color:rgb(64, 0, 128)">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Navbar header with the collapse button -->
+			<div class="navbar-header">
+				<!-- Toggle button for collapsing the menu on smaller screens -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a style="color: #fff;" class="navbar-brand" href="http://localhost:9090/index/page">BASIC-ERP</a>
+			</div>
+
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/user/page">
+							<i class="fas fa-user-plus"></i>New Registration
+						</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li>
+						<a class="nav-link" href="http://localhost:9090/login">
+							<i class="fas fa-sign-in-alt"></i> Login
+						</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+	<div class="container">
 		<div class="row justify-content-center">
 			<div class="col-md-6">
 				<div class="card">
@@ -61,27 +115,33 @@
 						<h4>Login</h4>
 						<div class="card-body">
 							<form id="loginForm" method="post">
-
 								<label for="userId">User ID:</label>
-								<input type="text" id="userId" name="userId" required><br><br>
+								<input type="text" id="userId" name="userId" required
+									placeholder="Enter User Email"><br><br>
 
 								<label for="password">Password:</label>
-								<input type="password" id="password" name="password" required><br><br>
-
+								<input type="password" id="password" name="password" required
+									placeholder="Enter password"><br><br>
+								<span class="password-toggle" onclick="togglePasswordVisibility()">
+									<i class="fa fa-eye" id="password-toggle-icon"></i>
+								</span>
+								<p id="errorMessage" style="color: red"></p>
 
 								<button type="submit">Login</button>
-								<a href="http://localhost:9090/user/page">Sign-up</a>
-								<label></label>
-								<a href="http://localhost:9090/forgot/password">Forgot-Password</a>
-
+								<a href="http://localhost:9090/user/page" style="margin-right: 180px;">Sign-up</a>
+								<a href="http://localhost:9090/forgot/password">Forgot-Password ?</a>
+							</form>
 						</div>
-						</form>
 					</div>
 				</div>
 			</div>
 		</div>
 	</div>
+	<!-- Add Bootstrap JS and Axios scripts -->
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+	<script>
+     	//<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 	<script>
@@ -124,24 +184,68 @@
 							axios.get("//localhost:9090/index/page", {headers, responseType: 'text'})
 								.then(response => {
 									if (response.status === 200) {
+										console.error("status is 444.");
 										const redirectUrl = "//localhost:9090/index/page";
 										window.location.href = redirectUrl;
 									}
 								})
 						}
 
-
-
+					} else if (response.status === 444) {
+						openModal("status is 444");
+						const redirectUrl = "http://localhost:9090/page/deactivation";
+						axios.get(redirectUrl, {headers, responseType: 'text'})
+						 Swal.fire({
+                              title: 'Error!',
+                              text: 'Your Account is Deactivated.',
+                              icon: 'error',
+                              timer: 4000,
+                 });
 					} else {
 						console.error("Login failed. Please check your credentials.");
+						openModal("Login failed. Please check your credentials.");
 					}
 				})
 				.catch(error => {
-					console.error("An error occurred:", error);
+					console.log("please enter valid username and password");
+					openModal("Invalid username or password. Please try again.");
 				});
 		});
+
+		function openModal(errorMessage) {
+			const errorMessageElement = document.getElementById("errorMessage");
+			errorMessageElement.innerHTML = errorMessage;
+
+		}
+
+		function closeModal() {
+			const modal = document.getElementById("errorModal");
+			modal.style.display = "none";
+		}
+
+		let passwordVisible = false;
+
+		function togglePasswordVisibility() {
+			const passwordInput = document.getElementById("password");
+			const passwordToggleIcon = document.getElementById("password-toggle-icon");
+
+			if (passwordVisible) {
+				passwordInput.type = "password";
+				passwordToggleIcon.classList.remove("fa-eye-slash");
+				passwordToggleIcon.classList.add("fa-eye");
+			} else {
+				passwordInput.type = "text";
+				passwordToggleIcon.classList.remove("fa-eye");
+				passwordToggleIcon.classList.add("fa-eye-slash");
+			}
+
+			passwordVisible = !passwordVisible;
+		}
 	</script>
 
 </body>
+
+</html>
+
 
 </html>

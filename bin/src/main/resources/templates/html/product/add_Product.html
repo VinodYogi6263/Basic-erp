@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+
+<html lang="en" class="light-style customizer-hide" dir="ltr" data-theme="theme-default"
+	data-assets-path="../../assets/" data-template="horizontal-menu-template">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+	<title>Add Product</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		h2 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		form {
+			max-width: 400px;
+			margin: 0 auto;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			background-color: #f5f5f5;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+
+		input[type="text"],
+		input[type="number"],
+		select,
+		input[type="date"] {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			font-size: 14px;
+		}
+
+		input[type="submit"] {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 3px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #0056b3;
+		}
+	</style>
+	<meta name="description" content="" />
+
+
+	<div id="apiResponse"></div>
+	<script>
+		console.log(localStorage.getItem('userToken'));
+	</script>
+</head>
+
+<body>
+	<div class="authentication-wrapper authentication-cover authentication-bg">
+		<div class="authentication-inner row">
+			<div class="d-flex col-lg-8 align-items-center justify-content-center p-sm-5 p-3">
+
+				<form id="productForm" method="post" action="/saveProduct" enctype="multipart/form-data">
+					<h2>Add Product</h2>
+
+					<label for="name">Product Name:</label>
+					<input type="text" id="name" name="name" required><br>
+
+					<label for="description">Product Description:</label>
+					<textarea id="description" name="description" rows="4" cols="50" required></textarea><br>
+
+					<label for="purchasePrice">Purchase Price:</label>
+					<input type="number" id="purchasePrice" name="purchasePrice" step="0.01" min="0" required><br>
+
+					<label for="maxRetailPrice">Max Retail Price:</label>
+					<input type="number" id="maxRetailPrice" name="maxRetailPrice" step="0.01" min="0" required><br>
+
+					<label for="sellingPrice">Selling Price:</label>
+					<input type="number" id="sellingPrice" name="sellingPrice" step="0.01" min="0" required><br>
+
+					<label for="quantity">Quantity:</label>
+					<input type="number" id="quantity" name="quantity" min="0" required><br>
+
+					<label for="productFile">Product Image:</label>
+					<input type="file" id="productFile" name="file" accept=".jpg, .jpeg, .png" required><br>
+					<p>Please upload a .jpg or .png file only.</p><br>
+
+					<label>Category:</label>
+					<select name="categoryId">
+						<option th:each="category : ${catagories}" th:value="${category.catagoryId}"
+							th:text="${category.catagoryName}"></option>
+					</select>
+
+					<label>Subcategory:</label>
+					<select name="subCategoryId">
+						<option th:each="subcategory : ${subCatagories}" th:value="${subcategory.subCatagoryId}"
+							th:text="${subcategory.subCatagoryName}"></option>
+					</select>
+
+					<input type="submit" value="Add Product"><br>
+
+					<a href="/listProduct">Go to Product List</a><br>
+					<a href="find_product_by_id">Find Product By Id</a><br>
+				</form>
+
+
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>

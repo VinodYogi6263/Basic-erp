@@ -10,10 +10,14 @@ import lombok.ToString;
 @NoArgsConstructor
 @ToString
 public class UserRequest {
-
+	private long RequestId;
 	private String requestFirstName;
 	private String requestLastName;
 	private String requestPhone;
-	private String requestEmialId;
+	private String requestRole;
+	private String requestEmailId;
+	private int requestStatus;
+	private String dP;
+	private String requestAddress;
 
 }

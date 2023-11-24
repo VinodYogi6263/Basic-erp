@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Update sub Catagory</title>
+</head>
+<body>
+
+<h1>Update Sub Catagory</h1>
+
+<div>
+	</br><a href="/listProduct">Product List</a></br>
+	</br><a href="/listSubCatagory">Sub Catagory List</a></br>
+</div>
+<form th:object="${catagories}" th:action="@{/updateSubCatagory}" method="post">
+	<label for="name">Sub Catagory Id:</label>
+    <input type="number" th:field="${catagories.subCatagoryId}" th:readonly="true"/><br><br>
+    
+    <label for="name">Sub Catagory Name:</label>
+    <input type="text" id="subCatagoryName" name="subCatagoryName" th:value="${catagories.subCatagoryName}"required/><br><br>
+    
+    <button type="submit">Update Catagory</button>
+</form>
+
+</body>
+</html>

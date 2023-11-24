@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Add Subcategory</title>
+</head>
+<body>
+    <h2>Add Subcategory</h2>
+    <form id="subcategoryForm" method="post" action="/saveSubCatagory">
+        <input type="hidden" id="categoryId" name="categoryId" value="${categoryId}">
+        
+        <label for="subCatagoryName">Subcategory Name:</label>
+        <input type="text" id="subCatagoryName" name="subCatagoryName" required><br>
+        
+        <label for="subCatagoryName">Subcategory Description:</label>
+        <input type="text" id="subCatagoryDescription" name="subCatagoryDescription" required><br>
+        
+        <button type="submit">Add Subcategory</button>
+    </form>
+</body>
+</html>

@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Role Permissions</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: #f4f4f4;
+		}
+
+		.container {
+			max-width: 800px;
+			margin: 20px auto;
+			background-color: #fff;
+			padding: 20px;
+			box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.permission-group {
+			margin-bottom: 20px;
+		}
+
+		.permission-group h2 {
+			font-size: 18px;
+			margin-bottom: 10px;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+		}
+
+		#savePermissions {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			cursor: pointer;
+		}
+
+		#savePermissions:hover {
+			background-color: #0056b3;
+		}
+
+		.styled-button {
+			background-color: rgb(0, 128, 64);
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		input[type="text"] {
+			padding: 8px;
+			border: 1px solid #ccc;
+			border-radius: 4px;
+			padding: 10px 20px;
+		}
+
+		/* Optional: Styling for the required indicator */
+		input[type="text"]:required {
+			border-color: rgb(0, 0, 255);
+			/* Change border color for required inputs */
+		}
+	</style>
+
+</head>
+
+<body>
+	<div class="container">
+		<h1>Create New Role with Permissions</h1>
+
+
+		<form action="http://localhost:9090/createrole" method="post">
+			<label for="userId">Enter Role Name:</label>
+			<input type="text" id="userId" name="roleName" required><br><br>
+			<div class="permission-group">
+				<h2>Product Permissions</h2>
+				<label><input type="checkbox" name="permissions" value="ROLE_PRODUCT-LIST"> Product List</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_PRODUCT-ADD"> Add Product</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_PRODUCT-UPDATE"> Update Product</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_PRODUCT-DELETE"> Delete Product</label>
+			</div>
+			<div class="permission-group">
+				<h2>Coupon Permissions</h2>
+				<label><input type="checkbox" name="permissions" value="ROLE_COUPON-LIST"> Coupon List</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_COUPON-ADD"> Add Coupon</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_COUPON-UPDATE"> Update Coupon</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_COUPON-DELETE"> Delete Coupon</label>
+			</div>
+			<div class="permission-group">
+				<h2>Category Permissions</h2>
+				<label><input type="checkbox" name="permissions" value="ROLE_CATEGORY-LIST"> Category List</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_CATEGORY-ADD"> Add Category</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_CATEGORY-UPDATE"> Update Category</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_CATEGORY-DELETE"> Delete Category</label>
+			</div>
+			<div class="permission-group">
+				<h2>Sub-Category Permissions</h2>
+				<label><input type="checkbox" name="permissions" value="ROLE_SUB_CATEGORY-LIST"> Sub-Category
+					List</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_SUB_CATEGORY-ADD"> Add Sub-Category</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_SUB_CATEGORY-UPDATE"> Update
+					Sub-Category</label>
+				<label><input type="checkbox" name="permissions" value="ROLE_SUB_CATEGORY-DELETE"> Delete
+					Sub-Category</label>
+			</div>
+
+			<button type="submit" class="styled-button">Create Role</button>
+		</form>
+	</div>
+	</div>
+
+</body>
+
+</html>

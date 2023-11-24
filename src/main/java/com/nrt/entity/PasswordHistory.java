@@ -21,11 +21,12 @@ public class PasswordHistory {
 	private Long userId;
 	private String passwordHash;
 	private LocalDateTime createdAt = LocalDateTime.now();
+
 	public PasswordHistory(Long userId, String passwordHash, LocalDateTime createdAt) {
 		super();
 		this.userId = userId;
 		this.passwordHash = passwordHash;
 		this.createdAt = createdAt;
 	}
-	
+
 }

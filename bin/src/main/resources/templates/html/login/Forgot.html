@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Password Update Form</title>
+</head>
+
+<body>
+	<div class="container mt-5">
+		<div class="response-field">
+			<form id="passwordUpdateForm" method="get" action="http://localhost:9090/forgot/update">
+				<label for="newPassword">Please Enter New Password:</label>
+				<input type="password" id="newPassword" name="newPassword" required><br><br>
+				<label for="confirmPassword">Please Confirm New Password:</label>
+				<input type="password" id="confirmPassword" name="confirmPassword" required><br><br>
+				<div id="passwordMismatch" style="color: red; display: none;">
+					New password and confirmation password do not match.
+				</div>
+				<button type="submit">Update</button>
+			</form>
+		</div>
+	</div>
+</body>
+
+</html>

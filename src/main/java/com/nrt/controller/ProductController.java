@@ -1,53 +1,62 @@
 package com.nrt.controller;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.servlet.ModelAndView;
-
-import com.nrt.entity.Catagory;
-import com.nrt.entity.Product;
-import com.nrt.entity.SubCatagory;
-import com.nrt.request.ProductRequest;
-import com.nrt.service.CatagoryService;
-import com.nrt.service.ProductService;
-import com.nrt.service.SubCatagoryService;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.servlet.ModelAndView;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.nrt.entity.Category;
+import com.nrt.entity.Product;
+import com.nrt.entity.SubCategory;
+import com.nrt.entity.User;
+import com.nrt.repository.ProductRepository;
+import com.nrt.request.ProductRequest;
+import com.nrt.service.CategoryService;
+import com.nrt.service.ProductService;
+import com.nrt.service.SubCategoryService;
+import com.nrt.util.CommonUtil;
+
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.log4j.Log4j2;
 
+@Log4j2
 @Controller
-@PreAuthorize("hasRole('PRODUCT')")
 public class ProductController {
 
 	@Autowired
 	private ProductService productService;
 
 	@Autowired
-	private CatagoryService catagoryService;
+	private CategoryService catagoryService;
 
 	@Autowired
-	private SubCatagoryService subCatagoryService;
+	private SubCategoryService subCatagoryService;
+	@Autowired
+	ProductRepository productRepository;
 
 	// this method redirect Add Product page
-	@RequestMapping("/product")
+	@GetMapping("/product")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('PRODUCT-ADD')")
 	public ModelAndView defaultMethod(ModelAndView modelAndView) {
-		List<Catagory> catagories = catagoryService.getAllCatagory();
+		List<Category> catagories = catagoryService.getAllCategory();
 		modelAndView.addObject("catagories", catagories);
-		List<SubCatagory> subCatagories=subCatagoryService.getAllSubCatagory();
+		List<SubCategory> subCatagories = subCatagoryService.getAllSubCategory();
 		modelAndView.addObject("subCatagories", subCatagories);
 		System.out.println(catagories);
 		modelAndView.setViewName("/html/product/add_Product");
@@ -55,19 +64,19 @@ public class ProductController {
 	}
 
 	// this method Add product
-	@RequestMapping("/saveProduct")
+	@PostMapping("/saveProduct")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('PRODUCT-ADD')")
 	public ModelAndView addProduct(@ModelAttribute("productRequest") ProductRequest productRequest,
 			@RequestParam("file") MultipartFile file, ModelAndView modelAndView) {
-		// modelAndView.addObject("subCatagory",
-		// 
-		boolean b = productService.saveProduct(productRequest, file);// call sevice layer saveProduct method
+
+		boolean b = productService.saveProduct(productRequest, file);// call sevice layer
+		// saveProduct method
 		if (!b) {
 			modelAndView.addObject("errorMessage", "Product is already exists.");
 			modelAndView.addObject("error", "An error occurred while processing your request. Please try again later.");
 			modelAndView.setViewName("/html/product/error_message");
 		} else {
 
-	
 			List<Product> products = productService.getAllProduct();
 			modelAndView.addObject("products", products);
 			modelAndView.setViewName("/html/product/list_product");
@@ -77,10 +86,21 @@ public class ProductController {
 
 	// this method find all product
 	@GetMapping("/listProduct")
-	public ModelAndView findProduct(ModelAndView modelAndView) {
-		List<Product> products = productService.getAllProduct();
+	@PreAuthorize("hasRole('ADMIN') or hasRole('PRODUCT-LIST')")
+	public ModelAndView getAllProductsList(ModelAndView modelAndView) {
+
+		List<Product> products = new ArrayList<Product>();
+
+		User currentUser = CommonUtil.getCurrentUserDetails();
+		if (currentUser.getRole().getName().equalsIgnoreCase("admin")) {
+			products = productService.getAllProduct();
+			modelAndView.setViewName("/html/product/list_product");
+		} else {
+			products = productService.getAllProductOfOneShop();
+			modelAndView.setViewName("html/shopkeeper/dashboard.html");
+		}
+
 		modelAndView.addObject("products", products);
-		modelAndView.setViewName("/html/product/list_product");
 		return modelAndView;
 	}
 
@@ -94,20 +114,28 @@ public class ProductController {
 		return modelAndView;
 	}
 
-	// this method delete product by id
-	@GetMapping("/deleteProduct/")
-	public ModelAndView deleteProduct(@RequestParam("id") Long id, ModelAndView modelAndView) {
-
-		productService.deleteProduct(id);
-
-		List<Product> products = productService.getAllProduct();
+	@GetMapping("/searchProduct")
+	public ModelAndView getProductByName(@RequestParam("term") String searchTerm, ModelAndView modelAndView)
+			throws JsonProcessingException {
+		log.info(" searchProduct method called ");
+		Product products = productRepository.findByName(searchTerm);
 		modelAndView.addObject("products", products);
 		modelAndView.setViewName("/html/product/list_product");
+		log.info(" searchProduct method called  end" + products.getName());
 		return modelAndView;
+	}
+
+	// this method delete product by id
+	@GetMapping("/deleteProduct/")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('PRODUCT-DELETE')")
+	public ModelAndView deleteProduct(@RequestParam("id") Long id, ModelAndView modelAndView) {
+		productService.deleteProduct(id);
+		return this.getAllProductsList(modelAndView);
 	}
 
 	// update product call by id
 	@GetMapping("/updateProductById/")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('PRODUCT-UPDATE')")
 	public ModelAndView updateProduct(@RequestParam("id") Long id, @ModelAttribute Product product,
 			ModelAndView modelAndView) {
 		product = productService.GetProductById(id);
@@ -118,14 +146,15 @@ public class ProductController {
 	}
 
 //	//update product 
-	@RequestMapping("/updateProduct")
+	@PostMapping("/updateProduct")
+	@PreAuthorize("hasRole('ADMIN') or hasRole('PRODUCT-UPDATE')")
 	public ModelAndView updateProduct(@ModelAttribute("product") Product product,
 			@RequestParam("file") MultipartFile file, ModelAndView modelAndView) {
 		modelAndView.addObject("title", "Product update");
 		modelAndView.addObject("message", "Successfull");
 		modelAndView.addObject("details", "\"Congratulations! Product Update successfully !");
 		modelAndView.addObject("error", "An error occurred while processing your request. Please try again later.");
-		modelAndView.setViewName(productService.updateProducts(product, file) ? "/html/product/response_message"
+		modelAndView.setViewName(productService.updateProducts(product, file) ? "/html/product/response_page"
 				: "/html/product/error_message");
 		return modelAndView;
 
@@ -133,7 +162,9 @@ public class ProductController {
 
 	@GetMapping(value = "/images/{imageName}", produces = MediaType.APPLICATION_ATOM_XML_VALUE)
 	public void getImage(@PathVariable String imageName, HttpServletResponse response) throws IOException {
-		String imageFilePath = "D:\\sts code\\Basic-erp\\src\\main\\resources\\static\\images\\" + imageName;
+		ClassLoader classLoader = getClass().getClassLoader();
+		String resourceFolderPath = classLoader.getResource("static/images/").getPath();
+		String imageFilePath = resourceFolderPath + imageName;
 		File imageFile = new File(imageFilePath);
 		if (!imageFile.exists() || !imageFile.isFile()) {
 			response.setStatus(HttpServletResponse.SC_NOT_FOUND);

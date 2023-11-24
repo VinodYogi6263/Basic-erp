@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>Add Subcategory</title>
+	<style>
+		h2 {
+			text-align: center;
+			margin-top: 20px;
+		}
+
+		body {
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+			margin: 0;
+		}
+
+		form {
+			padding: 60px;
+			background-color: #f7f7f7;
+			border: 1px solid #ddd;
+			border-radius: 5px;
+			box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+		}
+
+		label {
+			display: block;
+			margin-bottom: 10px;
+			font-weight: bold;
+		}
+
+		input[type="text"] {
+			width: 90%;
+			padding: 10px;
+			margin-bottom: 15px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+		}
+
+		button[type="submit"] {
+			display: block;
+			width: 100%;
+			padding: 10px;
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			border-radius: 5px;
+			cursor: pointer;
+			margin: 10px;
+		}
+
+		button[type="submit"]:hover {
+			background-color: #0056b3;
+		}
+	</style>
+
+	</style>
+</head>
+
+<body style="background-color: aliceblue;">
+
+	<form id="subcategoryForm" method="post" action="/saveSubCategory">
+		<h2>Add Subcategory</h2>
+		<input type="hidden" id="categoryId" name="categoryId" value="${categoryId}">
+
+		<label for="subCategoryName">Subcategory Name:</label>
+		<input type="text" id="subCategoryName" name="subCategoryName" required><br>
+
+		<label for="subCategoryDescription">Subcategory Description:</label>
+		<input type="text" id="subCategoryDescription" name="subCategoryDescription" required><br>
+
+		<button type="submit">Add Subcategory</button>
+	</form>
+</body>
+
+</html>

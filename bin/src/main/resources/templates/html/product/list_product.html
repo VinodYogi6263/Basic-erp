@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+	<title>Product List</title>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">BASIC-ERP</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="http://localhost:9090/product">Add-Product</a></li>
+				<li><a href="http://localhost:9090/listCatagory">Select-Catagory</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="http://localhost:9090/profile"><span class="glyphicon glyphicon-user"></span>Profile</a>
+				</li>
+				<li><a href="http://localhost:9090/logout"><span class="glyphicon glyphicon-log-in">Logout</span></a>
+				</li>
+			</ul>
+		</div>
+
+	</nav>
+	<h2>Product List</h2>
+	<table>
+		<tr>
+			<th>Product Image</th>
+			<th>Product Description</th>
+			<th>Product Name</th>
+			<th>Purchase Price</th>
+			<th>Max Retail Price</th>
+			<th>Selling Pricee</th>
+			<th>Quantity</th>
+			<th>Update Product</th>
+			<th>Delete Product</th>
+		</tr>
+
+
+		<tr th:each="product : ${products}">
+			<td><img th:src="@{'/images/' + ${product.imagePath}}" width="100" height="100" /></td>
+			<td th:text="${product.description}"></td>
+			<td th:text="${product.name}"></td>
+			<td th:text="${product.purchasePrice}"></td>
+			<td th:text="${product.maxRetailPrice}"></td>
+			<td th:text="${product.sellingPrice}"></td>
+			<td th:text="${product.quantity}"></td>
+			<td><a th:href="@{/updateProductById/(id=${product.id})}">update</a></td>
+			<td><a th:href="@{/deleteProduct/(id=${product.id})}">delete</a></td>
+		</tr>
+
+
+
+	</table>
+
+	</br>
+</body>
+
+</html>

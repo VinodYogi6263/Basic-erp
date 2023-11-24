@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+	<title>Coupon List</title>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">BASIC-ERP</a>
+			</div>
+
+			<ul class="nav navbar-nav">
+				<li class="nav-item">
+					<a class="nav-link" href="http://localhost:9090/index/page">Home</a>
+				</li>
+				<li><a href="http://localhost:9090/coupon/register/page">Create-Coupon</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="http://localhost:9090/profile"><span class="glyphicon glyphicon-user"></span>Profile</a>
+				</li>
+				<li><a href="http://localhost:9090/logout"><span class="glyphicon glyphicon-log-in">Logout</span></a>
+				</li>
+			</ul>
+		</div>
+	</nav>
+	<h2>Coupon List</h2>
+	<table>
+		<tr>
+			<th>Coupon Code</th>
+			<th>Type</th>
+			<th>Amount</th>
+			<th>Created At</th>
+			<th>Expires At</th>
+			<th>Active At</th>
+			<th>Amount Above</th>
+			<th>Description</th>
+			<th>Apply Per User</th>
+			<th>DELETE</th>
+			<th>UPDATE</th>
+		<tr th:each="coupon : ${listCoupon}">
+			<td th:text="${coupon.code}"></td>
+			<td th:text="${coupon.type}"></td>
+			<td th:text="${coupon.amount}"></td>
+			<td th:text="${coupon.createdAt}"></td>
+			<td th:text="${coupon.expiresAt}"></td>
+			<td th:text="${coupon.activetAt}"></td>
+			<td th:text="${coupon.ifAmountAbove}"></td>
+			<td th:text="${coupon.description}"></td>
+			<td th:text="${coupon.applyPerUser}"></td>
+			<td>
+				<a
+					th:href="@{'http://localhost:9090/coupon/edit-coupon/' + ${coupon.couponId} + '?flag=DELETE'}">Delete</a>
+			</td>
+			<td>
+				<a
+					th:href="@{'http://localhost:9090/coupon/edit-coupon/' + ${coupon.couponId} + '?flag=UPDATE'}">Update</a>
+			</td>
+		</tr>
+	</table>
+</body>
+
+</html>

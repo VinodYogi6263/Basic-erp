@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" lang="en" class="light-style customizer-hide" dir="ltr"
+	data-theme="theme-default" data-assets-path="../../assets/" data-template="horizontal-menu-template">
+
+<head>
+	<meta charset="utf-8" />
+	<meta name="viewport"
+		content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+	<title>Coupon Registration</title>
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+		}
+
+		h2 {
+			text-align: center;
+			margin-bottom: 20px;
+		}
+
+		form {
+			max-width: 400px;
+			margin: 0 auto;
+			padding: 20px;
+			border: 1px solid #ccc;
+			border-radius: 5px;
+			background-color: #f5f5f5;
+		}
+
+		label {
+			display: block;
+			margin-bottom: 5px;
+			font-weight: bold;
+		}
+
+		input[type="text"],
+		input[type="number"],
+		select,
+		input[type="date"] {
+			width: 100%;
+			padding: 8px;
+			margin-bottom: 10px;
+			border: 1px solid #ccc;
+			border-radius: 3px;
+			font-size: 14px;
+		}
+
+		input[type="submit"] {
+			background-color: #007bff;
+			color: #fff;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 3px;
+			cursor: pointer;
+			font-size: 16px;
+		}
+
+		input[type="submit"]:hover {
+			background-color: #0056b3;
+		}
+	</style>
+
+	<meta name="description" content="" />
+
+	
+</head>
+
+<body>
+	
+			<div class="d-flex col-lg-8 align-items-center justify-content-center p-sm-5 p-3">
+
+				<form id="couponForm" action="http://localhost:9090/coupon/update" method="post">
+					<h2>Coupon Update</h2>
+
+					<label for="couponId">Coupon ID:</label>
+					<input type="number" id="couponId" name="couponId" th:value="${coupon.couponId}" required>
+
+					<label for="couponCode">Coupon Code:</label>
+					<input type="text" id="couponCode" name="couponCode" th:value="${coupon.couponCode}" required>
+
+					<label for="couponType">Coupon Type:</label>
+					<select id="couponType" name="couponType" required>
+						<option value="1" th:selected="${coupon.couponType == 1}">FLAT</option>
+						<option value="2" th:selected="${coupon.couponType == 2}">PERCENT</option>
+					</select>
+
+					<label for="couponAmount">Coupon Amount:</label>
+					<input type="number" id="couponAmount" name="couponAmount" th:value="${coupon.couponAmount}"
+						required>
+
+					<label for="couponIfAmountAbove">If Amount Above Then Coupon Apply:</label>
+					<input type="number" id="couponIfAmountAbove" name="couponIfAmountAbove"
+						th:value="${coupon.couponIfAmountAbove}" required>
+
+					<label for="couponExpiresAt">Coupon Expired Date:</label>
+					<input type="date" id="couponExpiresAt" name="couponExpiresAt" th:value="${coupon.couponExpiresAt}"
+						required>
+
+					<label for="couponActivetAt">Coupon Active Date:</label>
+					<input type="date" id="couponActivetAt" name="couponActivetAt" th:value="${coupon.couponActivetAt}"
+						required>
+
+					<label for="couponDescription">Coupon Description:</label>
+					<input type="text" id="couponDescription" name="couponDescription"
+						th:value="${coupon.couponDescription}" required>
+
+					<label for="couponApplyPerUser">Coupon Apply Per User:</label>
+					<input type="number" id="couponApplyPerUser" name="couponApplyPerUser"
+						th:value="${coupon.couponApplyPerUser}" required>
+
+					<input type="submit" value="Update Coupon">
+					<p>Click <a href="http://localhost:9090/coupon/list">here</a> to Home.</p>
+				</form>
+
+
+			</div>
+			<!-- / Multi Steps Registration -->
+
+		</div>
+	</div>
+	
+</body>
+
+</html>

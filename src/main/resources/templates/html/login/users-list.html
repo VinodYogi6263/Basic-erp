@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>All users list</title>
+	<style>
+		button.active-button {
+			background-color: green;
+			color: white;
+			border: none;
+			padding: 5px 20px;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		/* Style for the button when inactive (red) */
+		button.inactive-button {
+			background-color: red;
+			color: white;
+			border: none;
+			padding: 5px 20px;
+			border-radius: 4px;
+			cursor: pointer;
+		}
+
+		th {
+			background-color: #007bff;
+			color: #fff;
+		}
+
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-color: rgb(64, 0, 128);
+		}
+
+		h3 {
+			text-align: center;
+			margin-top: 20px;
+			color: aliceblue;
+		}
+
+		table {
+			width: 95%;
+			border-collapse: collapse;
+			background-color: #fff;
+			margin: 20px auto;
+			box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+		}
+
+		th,
+		td {
+			padding: 12px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+
+		tbody tr:nth-child(even) {
+			background-color: #f2f2f2;
+		}
+			tbody tr:nth-child(odd) {
+			background-color:antiquewhite
+		}
+
+		tbody tr:hover {
+			background-color: #ddd;
+		}
+
+		.button-link {
+			display: inline-block;
+			padding: 5px 10px;
+			text-align: center;
+			text-decoration: none;
+			background-color: rgb(255, 20, 20);
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			cursor: pointer;
+			transition: background-color 0.5s ease;
+
+		}
+
+		.button-link:hover {
+			background-color: rgb(190, 0, 0);
+			text-decoration: none;
+			color: #fff;
+			font-weight: 150;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Navbar header with the collapse button -->
+			<div class="navbar-header">
+				<!-- Toggle button for collapsing the menu on smaller screens -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a style="color: #fff;" class="navbar-brand" href="http://localhost:9090/index/page">BASIC-ERP</a>
+			</div>
+
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/index/page">
+							🏠 Home</a>
+					</li>
+					<li>
+						<a href="http://localhost:9090/coupon/list"> 💰 Coupons</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/listProduct">  <i class="fas fa-list"></i> Products</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/listCategory"> 📦 Categories</a>
+					</li>
+
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/roles-list/page">  <i class="fas fa-list"></i> View Roles</a>
+					</li>
+				</ul>
+
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://localhost:9090/profile" style="color: #fff;"><span>
+								<i class="fas fa-user"></i></span>
+							Profile</a></li>
+					<li><a href="http://localhost:9090/logout" style="color: #fff;"><span>
+								<i class="fas fa-sign-out-alt"></i>Logout</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<h3>All Users List</h3>
+	<div class="container-fluid">
+		<table class="table">
+		<thead >
+			<tr>
+				<th>UserId</th>
+				<th>Email</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>Role</th>
+				<th>Phone Number</th>
+				<th>Status</th>
+				<th>Delete Button</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${users}">
+				<td th:text="${user.requestId}"></td>
+				<td th:text="${user.requestEmailId}"></td>
+				<td th:text="${user.requestFirstName}"></td>
+				<td th:text="${user.requestLastName}"></td>
+				<td th:text="${user.requestRole}"></td>
+				<td th:text="${user.requestPhone}"></td>
+				<td>
+					<form id="toggle-form" th:action="@{http://localhost:9090/user/activeDeactive/}">
+						<input type="hidden" name="userStatus" th:value="${user.requestStatus == 1 ? 0: 1}" />
+						<input type="hidden" name="userId" th:value="${user.requestId}" />
+						<button type="submit"
+							th:class="${user.requestStatus == 1 ? 'active-button' : 'inactive-button'}">
+							<span th:text="${user.requestStatus == 1 ? 'Active' : 'Inactive'}"></span></button>
+
+					</form>
+				</td>
+				<td>
+					<a th:href="@{/user-delete(id=${user.requestId})}"
+						onclick="return confirm('Are you sure you want to delete this User?')"
+						class="button-link">Delete</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	</div>
+</body>
+
+</html>

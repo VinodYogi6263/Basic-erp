@@ -7,7 +7,7 @@
 	<meta charset="utf-8" />
 	<meta name="viewport"
 		content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
-
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
 	<title>Coupon Registration</title>
 	<style>
 		body {
@@ -38,8 +38,8 @@
 		input[type="number"],
 		select,
 		input[type="date"] {
-			width: 100%;
-			padding: 8px;
+			width: 95%;
+			padding: 6px;
 			margin-bottom: 10px;
 			border: 1px solid #ccc;
 			border-radius: 3px;
@@ -60,66 +60,94 @@
 			background-color: #0056b3;
 		}
 	</style>
-
-	<meta name="description" content="" />
-
-	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
 </head>
 
-<body>
-	
-			<div class="d-flex col-lg-8 align-items-center justify-content-center p-sm-5 p-3">
-
-				<form id="couponForm" action="http://localhost:9090/coupon/update" method="post">
-					<h2>Coupon Update</h2>
-
-					<label for="couponId">Coupon ID:</label>
-					<input type="number" id="couponId" name="couponId" th:value="${coupon.couponId}" required>
-
-					<label for="couponCode">Coupon Code:</label>
-					<input type="text" id="couponCode" name="couponCode" th:value="${coupon.couponCode}" required>
-
-					<label for="couponType">Coupon Type:</label>
-					<select id="couponType" name="couponType" required>
-						<option value="1" th:selected="${coupon.couponType == 1}">FLAT</option>
-						<option value="2" th:selected="${coupon.couponType == 2}">PERCENT</option>
-					</select>
-
-					<label for="couponAmount">Coupon Amount:</label>
-					<input type="number" id="couponAmount" name="couponAmount" th:value="${coupon.couponAmount}"
-						required>
-
-					<label for="couponIfAmountAbove">If Amount Above Then Coupon Apply:</label>
-					<input type="number" id="couponIfAmountAbove" name="couponIfAmountAbove"
-						th:value="${coupon.couponIfAmountAbove}" required>
-
-					<label for="couponExpiresAt">Coupon Expired Date:</label>
-					<input type="date" id="couponExpiresAt" name="couponExpiresAt" th:value="${coupon.couponExpiresAt}"
-						required>
-
-					<label for="couponActivetAt">Coupon Active Date:</label>
-					<input type="date" id="couponActivetAt" name="couponActivetAt" th:value="${coupon.couponActivetAt}"
-						required>
-
-					<label for="couponDescription">Coupon Description:</label>
-					<input type="text" id="couponDescription" name="couponDescription"
-						th:value="${coupon.couponDescription}" required>
-
-					<label for="couponApplyPerUser">Coupon Apply Per User:</label>
-					<input type="number" id="couponApplyPerUser" name="couponApplyPerUser"
-						th:value="${coupon.couponApplyPerUser}" required>
-
-					<input type="submit" value="Update Coupon">
-					<p>Click <a href="http://localhost:9090/coupon/list">here</a> to Home.</p>
-				</form>
-
-
+<body style="background-color:rgb(64, 0, 128)">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Navbar header with the collapse button -->
+			<div class="navbar-header">
+				<!-- Toggle button for collapsing the menu on smaller screens -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a style="color: #fff;" class="navbar-brand" href="http://localhost:9090/index/page">BASIC-ERP</a>
 			</div>
-			<!-- / Multi Steps Registration -->
 
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/index/page">
+							<i class="fas fa-home"></i> Home
+						</a>
+					</li>
+					<li><a href="http://localhost:9090/coupon/list"> <i class="fas fa-list"></i>
+							Coupons</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li><a href="http://localhost:9090/profile" style="color: #fff;"><span>
+								<i class="fas fa-user"></i></span>
+							Profile</a></li>
+					<li><a href="http://localhost:9090/logout" style="color: #fff;"><span>
+								<i class="fas fa-sign-out-alt"></i>Logout</span></a></li>
+				</ul>
+			</div>
 		</div>
+	</nav>
+
+	<div class="d-flex col-lg-8 align-items-center justify-content-center p-sm-5 p-3">
+
+		<form id="couponForm" action="http://localhost:9090/coupon/update" method="post">
+			<h2>Coupon Update</h2>
+
+			<label for="couponId">Coupon ID:</label>
+			<input type="number" id="couponId" name="couponId" th:value="${coupon.couponId}" required>
+
+			<label for="couponCode">Coupon Code:</label>
+			<input type="text" id="couponCode" name="couponCode" th:value="${coupon.couponCode}" required>
+
+			<label for="couponType">Coupon Type:</label>
+			<select id="couponType" name="couponType" required>
+				<option value="1" th:selected="${coupon.couponType == 1}">FLAT</option>
+				<option value="2" th:selected="${coupon.couponType == 2}">PERCENT</option>
+			</select>
+
+			<label for="couponAmount">Coupon Amount:</label>
+			<input type="number" id="couponAmount" name="couponAmount" th:value="${coupon.couponAmount}" required>
+
+			<label for="couponIfAmountAbove">If Amount Above Then Coupon Apply:</label>
+			<input type="number" id="couponIfAmountAbove" name="couponIfAmountAbove"
+				th:value="${coupon.couponIfAmountAbove}" required>
+
+			<label for="couponExpiresAt">Coupon Expired Date:</label>
+			<input type="date" id="couponExpiresAt" name="couponExpiresAt" th:value="${coupon.couponExpiresAt}"
+				required>
+
+			<label for="couponActivetAt">Coupon Active Date:</label>
+			<input type="date" id="couponActivetAt" name="couponActivetAt" th:value="${coupon.couponActivetAt}"
+				required>
+
+			<label for="couponDescription">Coupon Description:</label>
+			<input type="text" id="couponDescription" name="couponDescription" th:value="${coupon.couponDescription}"
+				required>
+
+			<label for="couponApplyPerUser">Coupon Apply Per User:</label>
+			<input type="number" id="couponApplyPerUser" name="couponApplyPerUser"
+				th:value="${coupon.couponApplyPerUser}" required>
+
+			<input type="submit" value="Update">
+		</form>
+
 	</div>
-	
+
 </body>
 
 </html>

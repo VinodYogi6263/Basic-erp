@@ -6,6 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 
@@ -14,13 +15,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.csrf.CookieCsrfTokenRepository;
-import org.springframework.security.web.csrf.CsrfTokenRepository;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
+@SuppressWarnings("deprecation")
 @Configuration
 @EnableWebMvc
 @EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class SecurityConfig {
 
 	@Autowired
@@ -28,24 +29,44 @@ public class SecurityConfig {
 
 	@Autowired
 	private JwtFilter jwtFilter;
+	@Autowired
+	CustomAccessDeniedHandler customAccessDeniedHandler;
 
-	@Bean
-	public SecurityFilterChain securityFilterChain1(HttpSecurity http) throws Exception {
+    @Bean
+    SecurityFilterChain securityFilterChain1(HttpSecurity http) throws Exception {
 
-		final String PUBLIC_URL[] = { "/login/**", "/user/**", "/images/**", "/forgot/**" };
+		final String PUBLIC_URL[] = { "/login/**" ,"/forgot/**","/regiser/**","/user/**"};
 		http.csrf(csrf -> csrf.disable());
-		http.authorizeHttpRequests(
-				(requests) -> requests.requestMatchers(PUBLIC_URL).permitAll().anyRequest().authenticated());
+		http
+	    .authorizeHttpRequests(
+	        (requests) -> requests
+	            .requestMatchers(PUBLIC_URL).permitAll()
+	            .anyRequest().authenticated()
+	    )
+	    .formLogin(
+	        (formLogin) -> formLogin
+	            .loginPage("/login").permitAll()
+	    )
+	    .logout(
+	        (logout) -> logout
+	            .logoutUrl("/logout")
+	            .logoutSuccessUrl("/login")
+	            .invalidateHttpSession(true)
+	            .deleteCookies("JSESSIONID", "jwtToken")
+	    )
+	    .exceptionHandling(
+	        (exceptionHandling) -> exceptionHandling
+	            .accessDeniedHandler(customAccessDeniedHandler) // Set the custom access denied handler here
+	  );
 		http.sessionManagement((session) -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
-
 		http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
 		return http.build();
 
 	}
 
-	@Bean
-	public DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService CustumUserDetails) {
+    @Bean
+    DaoAuthenticationProvider daoAuthenticationProvider(UserDetailsService CustumUserDetails) {
 
 		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 		provider.setUserDetailsService(userDetailsService);
@@ -53,13 +74,13 @@ public class SecurityConfig {
 		return provider;
 	}
 
-	@Bean
-	public BCryptPasswordEncoder passwordEncoder() {
+    @Bean
+    BCryptPasswordEncoder passwordEncoder() {
 		return new BCryptPasswordEncoder();
 	}
 
-	@Bean
-	public AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
+    @Bean
+    AuthenticationManager authenticationManagerBean(AuthenticationConfiguration configuration) throws Exception {
 
 		return configuration.getAuthenticationManager();
 	}

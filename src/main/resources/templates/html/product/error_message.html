@@ -3,24 +3,21 @@
 
 <head>
 	<title>Error Message</title>
-	
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
 </head>
 
 <body>
-	 <div>
-						<h3 th:text="${error}"></h3>
-						<h3>Product ID Already Exists</h3>
-   							 <p>Please choose a different product ID or update the existing product.</p>
-					</div>
-					
-					<br>
-					<div>
-						</br><a href="/listProduct">Go to Product List</a></br>
-						</br><a href="http://localhost:9090/product">Add-Product</a></br>
-					</div>
+	<div>
+		<h3 th:text="${error}"></h3>
+		<h3>Product ID Already Exists</h3>
+		<p>Please choose a different product ID or update the existing product.</p>
+	</div>
+
+	<br>
+	<div>
+		</br><a href="/listProduct">Go to Product List</a></br>
+		</br><a href="http://localhost:9090/product">Add-Product</a></br>
+	</div>
 </body>
 
 </html>
-
-
-

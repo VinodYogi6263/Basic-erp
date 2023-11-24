@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Razorpay</title>
+	<style>
+		#rzp-button1 {
+			background-color: rgb(0, 160, 0);
+			color: white;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 5px;
+			font-size: 16px;
+			cursor: pointer;
+			text-align: center;
+		}
+
+		#rzp-button1:hover {
+			background-color: rgb(0, 130, 64);
+		}
+
+		.button {
+			text-align: center;
+		}
+
+		.Button-link {
+			text-decoration-color: azure;
+			border: 1px solid darkgray;
+			border-radius: 5px;
+			background-color: rgb(255, 255, 128);
+			padding: 8px;
+			color: rgb(0, 0, 0);
+			text-decoration: none;
+			max-width: 100px;
+		}
+
+		.Button-link:hover {
+			text-decoration: none;
+			background-color: rgb(255, 200, 0);
+		}
+		body {
+			font-family: Arial, sans-serif;
+			margin: 0;
+			padding: 0;
+			background-image: url('/images/rupeebg.jpg');
+			background-size:cover;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+	 	 }
+	</style>
+	
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+</head>
+</head>
+
+<body style="background-color:rgb(64, 0, 128)">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Navbar header with the collapse button -->
+			<div class="navbar-header">
+				<!-- Toggle button for collapsing the menu on smaller screens -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a style="color: antiquewhite;" class="navbar-brand" href="#">BASIC-ERP</a>
+			</div>
+
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/index/page">
+							<i class="fas fa-home"></i> Home</a>
+					</li>
+					<li><a href="http://localhost:9090/purchase-product"> 🛍️ Shop here</a></li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/view-cart/}"> 🛒My cart </a>
+					</li>
+					<li><a href="http://localhost:9090/logout"><span class="glyphicon glyphicon-log-out">
+								Logout</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+	<input type="text" id="order-Id" th:value="${orderId}" name="oid" readonly style="display: none;">
+
+	<div class="button">
+		<button id="rzp-button1">Pay</button>
+	</div>
+
+	<div id="invoiceContainer">
+
+
+       
+
+	</div>
+
+	<script src="https://checkout.razorpay.com/v1/checkout.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+	<script>
+
+		var order_id = document.getElementById("order-Id");
+
+		var options = {
+			"key": "rzp_test_GYytSvAZkcc8c2", // Enter the Key ID generated from the Dashboard
+			"amount": "50000", // Amount is in currency subunits. Default currency INR.Hence, 50000 refers to 50000 paise
+			"currency": "INR",
+			"name": "Nrt group",
+			"description": "Test Transaction",
+			"image": "https://example.com/your_logo",
+			"order_id": order_id.value,  //This is a sample Order ID. Pass the`id` obtained in the response of Step 1
+			"handler": function (response) {
+				// Payment was successful
+			 Swal.fire({
+                   title: 'Pyment Success!',
+                   text: 'The Payment was successful.',
+                   icon: 'success',
+                   timer: 3500,
+                 });
+
+               const button = document.getElementById("rzp-button1");
+
+            if (button) {
+                button.style.display = "none";
+               }
+
+				const paymentData = {
+					razorpay_payment_id: response.razorpay_payment_id,
+					razorpay_order_id: response.razorpay_order_id,
+					razorpay_signature: response.razorpay_signature
+				};
+
+
+				// Create a "Get Invoice" button dynamically
+				const getInvoiceButton = document.createElement("a");
+				getInvoiceButton.href = "http://localhost:9090/pay/invoice"; 
+				getInvoiceButton.textContent = "Get Invoice";
+
+
+				const invoiceContainer = document.getElementById("invoiceContainer"); 
+				invoiceContainer.appendChild(getInvoiceButton);
+				getInvoiceButton.classList.add("Button-link");
+                   
+                window.location.href = "http://localhost:9090/pay/invoice";  
+                   
+				const apiUrl = "http://localhost:9090/pay/razorpay-callback";
+
+				fetch(apiUrl, {
+					method: "POST",
+					headers: {
+						"Content-Type": "application/json"
+					},
+					body: JSON.stringify(paymentData)
+				})
+					.then(response => response.json())
+					.then(data => {
+						console.log("API response:", data);
+					})
+					.catch(error => {
+						console.error("Error:", error);
+					});
+			},
+
+
+			"prefill": {
+				"name": "ERP Basic",
+				"email": "basics.erps@gmail.com",
+				"contact": "7723028951",
+				"description": "Payment Testing "
+			},
+			"notes": {
+				"address": "ERP Corporate Office"
+
+			},
+			"theme": {
+				"color": "#3399cc"
+			}
+		};
+		var rzp1 = new Razorpay(options);
+		rzp1.on('payment.failed', function (response) {
+			// Handle payment failure
+			 Swal.fire({
+                  title: 'Error!',
+                   text: 'The Payment was Failed.',
+                   icon: 'error',
+                   timer: 4000,
+                 });
+			console.log(response.error);
+		});
+
+		document.getElementById('rzp-button1').onclick = function (e) {
+			rzp1.open();
+			e.preventDefault();
+		}
+	</script>
+
+</html>

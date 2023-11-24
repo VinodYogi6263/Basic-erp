@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Invoice</title>
+	<style>
+		body {
+			background-color: white;
+			font-family: Arial, sans-serif;
+		}
+
+		h2 {
+			color: #333;
+			text-align: center;
+		}
+
+		.row {
+			display: flex;
+		}
+
+		table {
+			border-collapse: collapse;
+		}
+
+		thead {
+			background-color: black;
+			color: ghostwhite;
+
+		}
+
+		table,
+		thead,
+		td {
+			border: 1px solid black;
+			padding: 10px;
+			margin: 10px;
+		}
+	</style>
+</head>
+
+<body>
+	<hr>
+	</hr>
+	<h2 style="text-align: center;">Invoice</h2>
+	<hr>
+	</hr>
+	<div class="container">
+
+		<div class="row">
+			<div style="text-align: left;">
+				<P>
+					<strong>Shipping Address</strong>
+				<p th:text="${user.requestAddress}"></p>
+				</P>
+			</div>
+			<div>
+				<p>_________________________________</p>
+			</div>
+
+			<div style="text-align: right;">
+				<P>
+					<strong>Billing Address</strong>
+				<p th:text="${user.requestAddress}"></p>
+				</P>
+			</div>
+		</div>
+
+		<hr>
+		</hr>
+
+		<div class="company-details">
+			<strong>Company Details </strong>
+			<p>Name: NEWRISE TECHNOSYS PVT. LTD.</p>
+			<P>Location: Danish Nagar Bhopal 460003 (M.P.)</P>
+			<P>Contact: basicerps@gmail.com </P>
+		</div>
+
+		<hr>
+		</hr>
+
+		<div class="invoice-details">
+			<p><strong>Invoice Number:</strong> INV-001</p>
+			<p><strong>Order Number:</strong> ORD-583</p>
+			<p><strong>Payment Details:</strong> </p>
+			<p> Payment Method : Cash_On_Delevary</p>
+			<p>Transaction ID: TR5689456</p>
+		</div>
+
+		<hr>
+		</hr>
+		<div class="row">
+			<div class="table-responsive">0
+				<table class="table">
+					<thead>
+						<tr>
+							<td class="text-right"><strong>Item</strong></td>
+							<td class="text-center"><strong>Price</strong></td>
+							<td class="text-center"><strong>Quantity</strong></td>
+							<td class="text-right"><strong>Totals</strong></td>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="item :${items}">
+							<td th:text="${item.product.name}">BS-200</td>
+							<td class="text-center" th:text="${item.product.sellingPrice}"></td>
+							<td class="text-center" th:text="${item.quantity}">1</td>
+							<td class="text-center" th:text="${item.total}">1</td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+		</div>
+		<div class="row">
+			<h4> Total Amount is: </h4>
+			<h4 th:text="${totalAmount}"></h4>
+		</div>
+	</div>
+</body>
+
+</html>

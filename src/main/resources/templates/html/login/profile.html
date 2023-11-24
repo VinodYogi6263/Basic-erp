@@ -1,70 +1,220 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
 	<title>Profile</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+	<!-- Link to your Bootstrap CSS -->
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 	<style>
+		#newId {
+			border-radius: 5px;
+			border: 2px black;
+			background-color: aquamarine;
+			border-radius: 5px;
+		}
+
+		.col-md-6 {
+			padding-bottom: 20px;
+			border: 2px black;
+			border-radius: 5px;
+
+		}
+
 		.response-field {
+			padding: 10px;
+			margin: 10px;
+		}
+
+		span {
+			align-items: center;
+		}
+
+		.custom-file-upload {
+			cursor: pointer;
+			background-color: #007BFF;
+			color: white;
+			border: none;
+			padding: 10px 20px;
+			border-radius: 5px;
 			margin-bottom: 10px;
 		}
+
+		.custom-file-upload:hover {
+			background-color: #0056b3;
+		}
+
+		.profile-picture-container {
+			position: relative;
+			border: 2px solid #ddd;
+			padding: 10px;
+			border-radius: 10px;
+			background-color: #f9f9f9;
+		}
+
+		#profilePicture {
+			max-width: 100%;
+			height: auto;
+			border-radius: 10px;
+			margin-top: 10px;
+		}
+
+		.button-link {
+			background-color: rgb(50, 50, 255);
+			color: #fff;
+			padding: 10px 20px;
+			border: none;
+			border-radius: 3px;
+			cursor: pointer;
+			text-decoration: none;
+		}
+
+		.button-link:hover {
+			background-color: rgb(0, 0, 255);
+			text-decoration: none;
+			color: antiquewhite;
+		}
+		 body {
+            font-family: Arial, sans-serif;
+			background-image: url('/images/profileBG.jpg');
+			background-size: cover;
+			background-repeat: no-repeat;
+			background-attachment: fixed;
+		}
 	</style>
+
+
 </head>
 
-<body>
-	<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-		<a class="navbar-brand" href="#">BASIC-ERP</a>
-		<li class="nav-item">
-			<a class="nav-link" href="http://localhost:9090/index/page">Home</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="http://localhost:9090/coupon/list">Coupon</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="http://localhost:9090/index/page">Select Catagory</a>
-		</li>
-		<li class="nav-item">
-			<a class="nav-link" href="http://localhost:9090/listProduct">Product</a>
-		</li>
-		<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
-			aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-			<span class="navbar-toggler-icon"></span>
-		</button>
-		<div class="collapse navbar-collapse" id="navbarNav">
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item">
-					<a class="nav-link" href="http://localhost:9090/profile"><span
-							class="glyphicon glyphicon-user"></span> Profile</a>
-				</li>
-				<li class="nav-item">
-					<a class="nav-link" href="http://localhost:9090/logout"><span
-							class="glyphicon glyphicon-log-in"></span> Logout</a>
-				</li>
-			</ul>
+<body style="background-color:rgb(64, 0, 128)">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Navbar header with the collapse button -->
+			<div class="navbar-header">
+				<!-- Toggle button for collapsing the menu on smaller screens -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a class="navbar-brand" href="#">BASIC-ERP</a>
+			</div>
+
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/index/page">
+							<i class="fas fa-home"></i> Home</a>
+					</li>
+					<li><a href="http://localhost:9090/purchase-product"> 🛍️ Shop here</a></li>
+					<li>
+						<a href="http://localhost:9090/password/update">Update Password</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-item">
+						<a class="nav-link" th:href="@{/view-cart/}"> 🛒My cart </a>
+					</li>
+					<li><a href="http://localhost:9090/logout"><span class="glyphicon glyphicon-log-out">
+								Logout</span></a></li>
+				</ul>
+			</div>
 		</div>
 	</nav>
-	<div class="container mt-5">
-		<h2>Your Profile</h2>
-		<div class="response-field">
-			<strong>First Name:</strong> <span th:text="${response.requestFirstName}"></span>
-		</div>
-		<div class="response-field">
-			<strong>Last Name:</strong> <span th:text="${response.requestLastName}"></span>
-		</div>
-		<div class="response-field">
-			<strong>Phone:</strong> <span th:text="${response.requestPhone}"></span>
+
+
+	<div id="newID" class="container mt-5" style="background-color: rgb(255, 255, 255); border-radius: 5px; width:60%">
+		<h2 class="text-center">My Profile</h2>
+		<hr>
+		<div class="col-md-4">
+			<div class="response-field text-center">
+				<label for="imageInput" class="custom-file-upload">
+					<img id="profilePicture" th:src="${profilePictureUrl}" alt="Profile Picture">
+					<i class="fas fa-edit"></i> Change Picture
+				</label>
+				<input type="file" accept="image/*" style="display: none;" id="imageInput">
+			</div>
 		</div>
 
-		<div class="response-field">
-			<strong>Email:</strong> <span th:text="${response.requestEmialId}"></span>
+
+		<div class="col-md-6">
+			<div class="response-field">
+				<strong>First Name:</strong>
+				<span th:text="${response.requestFirstName}"></span>
+			</div>
+			<div class="response-field">
+				<strong>Last Name:</strong>
+				<span th:text="${response.requestLastName}"></span>
+			</div>
+			<div class="response-field">
+				<strong>Phone:</strong>
+				<span th:text="${response.requestPhone}"></span>
+			</div>
+			<div class="response-field">
+				<strong>My Role:</strong>
+				<span th:text="${response.requestRole}"></span>
+			</div>
+			<div class="response-field">
+				<strong>Email:</strong>
+				<span th:text="${response.requestEmailId}"></span>
+			</div>
+			<div class="response-field">
+				<strong>Address:</strong>
+				<span th:text="${response.requestAddress}"></span>
+			</div>
 		</div>
-		<a href="http://localhost:9090/password/update" class="btn btn-primary">Update Password</a>
+	    	<a class="button-link" href="http://localhost:9090/user/updateProfilePage">Edit-Profile</a>
+	    <br>
+	    <br>
+	    
+		 <div th:if="${response.requestRole ne 'ADMIN'}">
+		    <a class="button-link" href="http://localhost:9090/user/deactive">Deactivate-ID</a>
+		</div>
 	</div>
+
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.16.0/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+	<script>
+		const profilePicture = document.getElementById('profilePicture');
+		const imageInput = document.getElementById('imageInput');
+
+		// Add a click event listener to the profile picture
+		profilePicture.addEventListener('click', () => {
+			imageInput.click();
+		});
+
+		imageInput.addEventListener('change', (event) => {
+			const selectedFile = event.target.files[0];
+			if (selectedFile) {
+				const imageUrl = URL.createObjectURL(selectedFile);
+				profilePicture.src = imageUrl;
+
+				const formData = new FormData();
+				formData.append('file', selectedFile);
+
+				fetch('/save/profile', { 
+					method: 'POST',
+					body: formData
+				})
+					.then(response => response.json())
+					.then(data => {
+						console.log('Server response:', data);
+					})
+					.catch(error => {
+						console.error('Error:', error);
+					});
+			}
+		});
+
+	</script>
+	
 </body>
 
 </html>

@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class CatagoryResponce {
-	
+
 	private long catagoryId;
 	private String catagoryName;
 	private String catagoryDescription;

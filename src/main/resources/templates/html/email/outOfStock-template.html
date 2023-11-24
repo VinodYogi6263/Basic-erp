@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>out of stock notification</title>
+</head>
+
+<body style="font-family: Arial, sans-serif; background-color: #f4f4f4; padding: 20px;">
+	<div style="background-color: white; padding: 20px; border-radius: 5px; box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);">
+		<img src="cid:nrtLogo" alt="Nrt company Logo" style="max-width: 100px;">
+		<p>Dear Shopkeeper,<strong th:text="${username}"></strong></p>
+		<p>We would like to inform you that the following product is currently out of stock in your web store:</p>
+		<hr>
+		<!-- Product Details -->
+		<table class="table">
+		<thead class="table-dark" >
+				<tr style="background-color: cornflowerblue;">
+				<th>Product id </th>
+				<th>Description</th>
+				<th>Name</th>
+			</tr>
+		</thead>
+          <tbody>
+			<tr th:each="product : ${productList}">
+				<td th:text="${product.id}"></td>
+				<td th:text="${product.description}"></td>
+				<td th:text="${product.name}"></td>
+			</tr>
+
+		  </tbody>
+		</table>
+		<hr>
+
+		<p>We recommend taking action to restock this product as soon as possible to avoid any inconvenience to your
+			customers. You can place an order or contact our supplier for assistance.</p>
+		<p>If you have any questions or need further assistance, please feel free to contact our support team.</p>
+		<p>Thank you for your prompt attention to this matter.</p>
+		<p>If you have any questions or need assistance, feel free to contact us.</p>
+		<p>Contact-email: <b>basic.erps@gmail.com</b></p>
+		<p style="background-color: blue; color: aliceblue; font-weight: 150; padding: 10px;">&copy; 2023 Newrise
+			Technosys pvt. ltd.</p>
+	</div>
+</body>
+
+</html>

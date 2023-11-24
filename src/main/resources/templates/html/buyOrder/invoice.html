@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+	<title>invoice</title>
+	<style>
+		.Button-link {
+			border: 1px solid darkgray;
+			border-radius: 5px;
+			background-color: rgb(20, 40, 255);
+			padding: 8px;
+			color: aliceblue;
+			text-decoration: none;
+			box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+		}
+
+		.Button-link:hover {
+			text-decoration: none;
+			background-color: rgb(0, 0, 255);
+		}
+
+		#formattedDataPreview {
+			width: 700px;
+			height: 800px;
+			border: 2px rgb(0, 0, 160);
+			background-color: rgb(255, 255, 128);
+			border-radius: 5px;
+			max-height: 600px;
+		}
+
+		.container {
+			text-align: center;
+			background-color: blue;
+			margin: 50px;
+			box-shadow: 5px 5px 5px rgba(0, 0, 0, 0.5);
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<link rel="icon" href="/static/images/favicon/favicon.ico" type="image/x-icon">
+</head>
+
+<body style="background-color:rgb(64, 0, 128); text-align: center;">
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<!-- Navbar header with the collapse button -->
+			<div class="navbar-header">
+				<!-- Toggle button for collapsing the menu on smaller screens -->
+				<button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#myNavbar">
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+					<span class="icon-bar"></span>
+				</button>
+				<a style="color: antiquewhite;" class="navbar-brand" href="#">BASIC-ERP</a>
+			</div>
+
+			<!-- Navbar links -->
+			<div class="collapse navbar-collapse" id="myNavbar">
+				<ul class="nav navbar-nav">
+					<li class="nav-item">
+						<a class="nav-link" href="http://localhost:9090/index/page">
+							<i class="fas fa-home"></i> Home</a>
+					</li>
+				</ul>
+				<ul class="nav navbar-nav navbar-right">
+					<li class="nav-item">
+						<a href="http://localhost:9090/purchase-product"><i class="fas fa-arrow-left"></i> Back to
+							Shop 🛍️</a>
+
+					</li>
+					<li><a href="http://localhost:9090/logout"><span class="glyphicon glyphicon-log-out">
+								Logout</span></a></li>
+				</ul>
+			</div>
+		</div>
+	</nav>
+
+     <div class="alert alert-success">
+			<h4 class="alert-heading">Order Placed Successfully!</h4>
+			<p>Thank you for your order. Your order invoice is generated.</p>
+		</div>
+
+	<div class="form-container">
+		<form id="myForm" action="http://localhost:9090/pay/downloadInvoice" method="post">
+
+			<textarea id="formattedData" style="display: none;" name="htmlContent">
+				<html>
+                    <head>
+                        <style>
+                            body {
+								background-color: white;
+                                font-family: Arial, sans-serif;
+                            }
+                            h2 {
+                                color: #333;
+                                text-align:center;
+                            }
+                           
+                            .row{
+		                  	     display: flex;
+                             }
+                           table {
+                                border-collapse: collapse;
+                                 }
+                           thead{
+							   background-color : black;
+							   color : ghostwhite;
+							  
+						   }
+		           table, thead, td {
+                                 border: 1px solid black;
+                                 padding: 10px;
+                                 margin:10px;
+							 }
+                              
+                        </style>
+                        
+        <title>Invoice</title>
+   </head>
+   <body>
+    <hr></hr>  
+        <h2 style="text-align: center;">Invoice</h2>    
+           <hr></hr>  
+  <div class="container">
+ 
+    		<div class="row">
+				<div style="text-align: left;">
+				<P>
+					<strong>Shipping Address</strong>
+				   <p th:text="${user.requestAddress}"></p> 
+				</P>
+				</div>
+				<div>
+					<p>_________________________________</p>
+    		   </div>
+		
+		     <div style="text-align: right;">
+				<P>
+					<strong>Billing Address</strong>
+				   <p th:text="${user.requestAddress}"></p> 
+				</P>
+			</div>
+		</div>
+			
+		<hr></hr>
+		
+            <div class="company-details">
+				<strong>Company Details </strong>
+               <p>Name: NEWRISE TECHNOSYS PVT. LTD.</p>
+               <P>Location: Danish Nagar Bhopal 460003 (M.P.)</P>
+               <P>Contact: basicerps@gmail.com </P>
+            </div>
+            
+       <hr></hr>
+       
+        <div class="invoice-details">
+            <p><strong>Invoice Number:</strong> INV-001</p>
+            <p><strong>Order Number:</strong> ORD-583</p>
+            <p><strong>Payment Details:</strong> </p>
+            <p> Payment Method : Cash_On_Delevary</p>
+            <p>Transaction ID: TR5689456</p>
+        </div>
+        
+          <hr></hr>
+       			<div class="row">
+    				<div class="table-responsive">0
+    					<table class="table table-condensed">
+    						<thead>
+                                <tr>  
+        							<td class="text-right"><strong>Item</strong></td>
+        							<td class="text-center"><strong>Price</strong></td>
+        							<td class="text-center"><strong>Quantity</strong></td>
+        							<td class="text-right"><strong>Totals</strong></td>
+                                </tr>
+    						</thead>
+    						<tbody>
+    						 <tr th:each="item :${items}"> 
+    								<td th:text="${item.product.name}">BS-200</td>
+    								<td class="text-center" th:text="${item.product.sellingPrice}"></td>
+    								<td class="text-center" th:text="${item.quantity}">1</td>
+    							    <td class="text-center" th:text="${item.total}">1</td>
+    							</tr>
+    						</tbody>
+    					</table>
+      		         </div>
+                 </div>
+      <div class="row"> 
+       <h4> Total Amount is: </h4><h4 th:text="${totalAmount}"></h4> 
+  </div>
+  
+   <hr></hr>
+   
+ </div>
+  </body>
+      </html>
+         </textarea>
+
+			<iframe id="formattedDataPreview" frameborder="0"></iframe>
+
+			<div class="button-container">
+				<button type="submit" class="Button-link">
+					<i class="fas fa-download"></i> Download Invoice
+				</button>
+		</form>
+	</div>
+
+
+
+	<script>
+		// Get references to the textarea and iframe elements
+		var textArea = document.getElementById('formattedData');
+		var iframe = document.getElementById('formattedDataPreview');
+
+		// Function to update the iframe content
+		function updateIframe() {
+			var formattedData = textArea.value;
+			var iframeDocument = iframe.contentDocument || iframe.contentWindow.document;
+			iframeDocument.open();
+			iframeDocument.write(formattedData);
+			iframeDocument.close();
+		}
+
+		// Listen for changes in the textarea and update the iframe accordingly
+		textArea.addEventListener('input', updateIframe);
+
+		// Initial update when the page loads
+		updateIframe();
+	</script>
+
+</body>
+
+</html>

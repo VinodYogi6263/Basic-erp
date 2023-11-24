@@ -10,7 +10,7 @@ import lombok.ToString;
 @AllArgsConstructor
 @ToString
 public class ProductResponce {
-	
+
 	private long id;
 
 	private String name;
@@ -26,6 +26,5 @@ public class ProductResponce {
 	private int quantity;
 
 	private String imagePath;
-
 
 }

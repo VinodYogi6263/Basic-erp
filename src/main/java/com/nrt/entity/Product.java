@@ -1,5 +1,9 @@
 package com.nrt.entity;
 
+import java.io.Serializable;
+import java.util.List;
+
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -7,20 +11,25 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Min;
 import lombok.AllArgsConstructor;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.Setter;
 
+@Setter
+@Getter
 @Entity
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Table(name = "products_table")
-public class Product {
+public class Product implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -48,7 +57,15 @@ public class Product {
 	@Column(name = "product_path")
 	private String imagePath;
 	
+	private String shopkeeperId;
+
 	@ManyToOne
-    @JoinColumn(name = "subcategory_id")
-    private SubCatagory subCatagory;
+	@JoinColumn(name = "category_id")
+	private Category category;
+
+	@OneToMany(mappedBy = "product", cascade = CascadeType.ALL)
+	private List<CartItem> cartItems;
+	
+	
+
 }

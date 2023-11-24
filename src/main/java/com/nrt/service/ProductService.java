@@ -17,4 +17,10 @@ public interface ProductService {
 	public void deleteProduct(Long id);
 
 	public boolean updateProducts(Product product, MultipartFile file);
+
+	public void decreaseProductQuantityCount(long orderId);
+
+	void OrderCancelled(long orderId);
+
+	public List<Product> getAllProductOfOneShop();
 }

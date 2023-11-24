@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+
+<head>
+	<title>Sub Catagory List</title>
+	<style>
+		table {
+			width: 100%;
+			border-collapse: collapse;
+		}
+
+		th,
+		td {
+			padding: 8px;
+			text-align: left;
+			border-bottom: 1px solid #ddd;
+		}
+
+		th {
+			background-color: #f2f2f2;
+		}
+	</style>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.4/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.1/js/bootstrap.min.js"></script>
+</head>
+
+<body>
+	<nav class="navbar navbar-inverse">
+		<div class="container-fluid">
+			<div class="navbar-header">
+				<a class="navbar-brand" href="#">BASIC-ERP</a>
+			</div>
+			<ul class="nav navbar-nav">
+				<li><a href="http://localhost:9090/product">Add-Product</a></li>
+				<li><a href="http://localhost:9090/catagory">Add-Catagory</a></li>
+				<li><a href="http://localhost:9090/subCatagory">Add-Sub-Catagory</a></li>
+				<li><a href="http://localhost:9090/listProduct">Product-List</a></li>
+				<li><a href="http://localhost:9090/listCatagory">Catagory-List</a></li>
+			</ul>
+			<ul class="nav navbar-nav navbar-right">
+				<li><a href="http://localhost:9090/profile"><span class="glyphicon glyphicon-user"></span>Profile</a>
+				</li>
+				<li><a href="http://localhost:9090/logout"><span class="glyphicon glyphicon-log-in">Logout</span></a>
+				</li>
+			</ul>
+		</div>
+
+	</nav>
+    <h2>Subcategory List</h2>
+
+    <table border>
+            <tr>
+                <th>Subcategory Name</th>
+                <th>Subcategory Description</th>
+                <th>Update</th>
+                <th>Delete</th>
+            </tr>
+            <tr th:each="subCatagories : ${subCatagories}">
+                <td th:text="${subCatagories.subCatagoryName}"></td>
+                <td th:text="${subCatagories.subCatagoryDescription}"></td>
+                <td><a th:href="@{/updateSubCatagoryById/(id=${subCatagories.subCatagoryId})}">Update</a>
+				<td><a th:href="@{/deleteSubCatagory/(id=${subCatagories.subCatagoryId})}">delete</a></td>
+                </td>
+                
+            </tr>
+    </table>
+
+</body>
+
+</html>

@@ -1,0 +1,52 @@
+{"properties": [
+  {
+    "name": "image.upload.path",
+    "type": "java.lang.String",
+    "description": "A description for 'image.upload.path'"
+  },
+  {
+    "name": "spring.error.path",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.error.path'"
+  },
+  {
+    "name": "spring.thymeleaf.dialect",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.thymeleaf.dialect'"
+  },
+  {
+    "name": "spring.thymeleaf.extras.thymeleaf-extras-springsecurity4.enabled",
+    "type": "java.lang.String",
+    "description": "A description for 'spring.thymeleaf.extras.thymeleaf-extras-springsecurity4.enabled'"
+  },
+  {
+    "name": "paypal.mode",
+    "type": "java.lang.String",
+    "description": "A description for 'paypal.mode'"
+  },
+  {
+    "name": "paypal.client.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'paypal.client.secret'"
+  },
+  {
+    "name": "paypal.client.id",
+    "type": "java.lang.String",
+    "description": "A description for 'paypal.client.id'"
+  },
+  {
+    "name": "error.path",
+    "type": "java.lang.String",
+    "description": "A description for 'error.path'"
+  },
+  {
+    "name": "razorpay.api.key",
+    "type": "java.lang.String",
+    "description": "A description for 'razorpay.api.key'"
+  },
+  {
+    "name": "razorpay.api.secret",
+    "type": "java.lang.String",
+    "description": "A description for 'razorpay.api.secret'"
+  }
+]}

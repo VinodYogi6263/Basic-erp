@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Add Role to User</title>
+	<!-- Include Bootstrap CSS -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/css/bootstrap.min.css" rel="stylesheet">
+
+	<style>
+		.container {
+			max-width: 400px;
+			margin: 0 auto;
+			padding: 20px;
+			background-color: #f8f9fa;
+			border-radius: 5px;
+			box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+		}
+
+		.form-group {
+			margin-bottom: 20px;
+		}
+
+		label {
+			font-weight: bold;
+		}
+	</style>
+</head>
+
+<body>
+	<div class="container mt-5">
+		<h1>Assign Role to User</h1>
+
+		<form action="http://localhost:9090/assign-role" method="post" id="addRoleForm">
+			<div class="form-group">
+				<label for="userEmail">User Email:</label>
+				<input type="email" id="userEmail" name="email" class="form-control" required>
+			</div>
+
+			<div class="form-group">
+				<label for="userRole">Select Role:</label>
+				<select id="userRole" name="roleName" class="form-control" placeholder="Select Role">
+					<option th:each="role : ${roles}" th:value="${role}" th:text="${role}"></option>
+				</select>
+			</div>
+
+			<button type="submit" class="btn btn-primary">Assign Role</button>
+		</form>
+	</div>
+
+	<!-- Include Bootstrap JavaScript (optional) -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.min.js"></script>
+</body>
+
+</html>

@@ -1,6 +1,6 @@
 package com.nrt.request;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,9 +21,9 @@ public class CouponRequest {
 
 	private long couponAmount;
 
-	private Date couponExpiresAt;
+	private LocalDate couponExpiresAt;
 
-	private Date couponActivetAt;
+	private LocalDate couponActivetAt;
 
 	private long couponIfAmountAbove;
 
